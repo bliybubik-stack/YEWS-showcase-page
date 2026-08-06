@@ -9,7 +9,7 @@
       id: 'v1',
       title: 'Showcase V1',
       subtitle: 'Fitness · Tilt + Tabs',
-      file: 'showcases/showcase-v1.html',
+      file: 'showcase-v1.html',
       icon: 'fa-dumbbell',
       color: '#a0a0a0'
     },
@@ -17,7 +17,7 @@
       id: 'v2',
       title: 'Showcase V2',
       subtitle: 'Portfolio · Glass',
-      file: 'showcases/showcase-v2.html',
+      file: 'showcase-v2.html',
       icon: 'fa-user-astronaut',
       color: '#b0b0b0'
     },
@@ -25,7 +25,7 @@
       id: 'v3',
       title: 'Showcase V3',
       subtitle: 'Studio · Services',
-      file: 'showcases/showcase-v3.html',
+      file: 'showcase-v3.html',
       icon: 'fa-palette',
       color: '#c0c0c0'
     },
@@ -33,7 +33,7 @@
       id: 'v4',
       title: 'Showcase V4',
       subtitle: 'Agency · Portfolio',
-      file: 'showcases/showcase-v4.html',
+      file: 'showcase-v4.html',
       icon: 'fa-building',
       color: '#b8b8b8'
     },
@@ -41,7 +41,7 @@
       id: 'v5',
       title: 'Showcase V5',
       subtitle: 'Analytics · Products',
-      file: 'showcases/showcase-v5.html',
+      file: 'showcase-v5.html',
       icon: 'fa-chart-simple',
       color: '#a8a8a8'
     }
