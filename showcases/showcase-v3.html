@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass · Studio · Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP & Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0b0b0b;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 16px;
+    }
+
+    /* Glassmorphism – sharp 0.5rem, monochrome, blur */
+    .glass {
+      background: rgba(30, 30, 32, 0.35);
+      backdrop-filter: blur(12px) saturate(0.8);
+      -webkit-backdrop-filter: blur(12px) saturate(0.8);
+      border: 1px solid rgba(200, 200, 200, 0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+      border-radius: 0.5rem;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .glass-deep {
+      background: rgba(22, 22, 24, 0.5);
+      backdrop-filter: blur(16px) saturate(0.6);
+      -webkit-backdrop-filter: blur(16px) saturate(0.6);
+      border: 1px solid rgba(180, 180, 180, 0.06);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+      border-radius: 0.5rem;
+    }
+
+    .phone-glass {
+      background: rgba(16, 16, 18, 0.55);
+      backdrop-filter: blur(18px) saturate(0.5);
+      -webkit-backdrop-filter: blur(18px) saturate(0.5);
+      border: 1px solid rgba(180, 180, 180, 0.05);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    /* Grayscale */
+    img, svg, .icon { filter: grayscale(1); }
+    .avatar { border-radius: 0.5rem; filter: grayscale(1); }
+
+    .text-white { color: #f0f0f0; }
+    .text-gray-400 { color: #a0a0a0; }
+    .text-gray-500 { color: #808080; }
+    .text-xs { color: #b0b0b0; }
+
+    /* Tilt cards */
+    .tilt-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: box-shadow 0.2s ease;
+      cursor: default;
+      border-radius: 0.5rem;
+    }
+
+    .tilt-card .tilt-content {
+      transform-style: preserve-3d;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
+    .tilt-card .no-tilt {
+      transform: translateZ(0) !important;
+      backface-visibility: hidden;
+    }
+
+    .tilt-card .tilt-content > * {
+      transform: translateZ(0);
+    }
+
+    /* Service cards */
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* Testimonial */
+    .testimonial-quote {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #d0d0d0;
+      font-style: italic;
+    }
+
+    /* Tab styling */
+    .tab-btn {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      padding: 4px 12px;
+      border-radius: 0.5rem;
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+      background: transparent;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tab-btn.active {
+      background: rgba(255,255,255,0.06);
+      color: #f0f0f0;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scrollable */
+    .scroll-list {
+      max-height: 180px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #444 transparent;
+    }
+    .scroll-list::-webkit-scrollbar {
+      width: 3px;
+    }
+    .scroll-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .scroll-list::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 10px;
+    }
+
+    /* Price tag */
+    .price-tag {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f0f0f0;
+    }
+    .price-tag span {
+      font-size: 12px;
+      font-weight: 400;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div class="w-full max-w-md phone-glass p-6 relative overflow-hidden">
+
+  <!-- Status Bar -->
+  <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
+    <span class="tracking-wide">Studio</span>
+    <div class="flex space-x-1.5 items-center">
+      <div class="w-4 h-4 border border-gray-500 rounded-full flex items-center justify-center">
+        <span class="block w-2 h-2 bg-gray-400 rounded-full"></span>
+      </div>
+      <span class="text-[10px] tracking-widest opacity-70">●●●●●</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="mb-5">
+    <h1 class="text-3xl font-bold text-white tracking-tight">Creative<br/>Studio</h1>
+    <p class="text-gray-400 text-sm mt-1">Design · Motion · Code</p>
+  </div>
+
+  <!-- Service Tabs -->
+  <div class="mb-4">
+    <div class="flex gap-1 mb-3">
+      <button class="tab-btn active" data-tab="brand">Brand</button>
+      <button class="tab-btn" data-tab="digital">Digital</button>
+      <button class="tab-btn" data-tab="motion">Motion</button>
+    </div>
+
+    <div class="glass-deep p-4 tilt-card" id="servicesCard">
+      <div class="tilt-content">
+        <!-- Brand Tab -->
+        <div class="tab-content active" id="tab-brand">
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="service-icon no-tilt">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-white font-medium text-sm">Brand Identity</p>
+                    <p class="text-gray-400 text-xs">Logo, guidelines, assets</p>
+                  </div>
+                  <div class="price-tag">$2.8k <span>+</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-white/5 pt-3 flex items-start gap-3">
+              <div class="service-icon no-tilt">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-white font-medium text-sm">Strategy & Positioning</p>
+                    <p class="text-gray-400 text-xs">Market research, narrative</p>
+                  </div>
+                  <div class="price-tag">$1.9k <span>+</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Digital Tab -->
+        <div class="tab-content" id="tab-digital">
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="service-icon no-tilt">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-white font-medium text-sm">Web Design</p>
+                    <p class="text-gray-400 text-xs">Responsive, interactive</p>
+                  </div>
+                  <div class="price-tag">$3.5k <span>+</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-white/5 pt-3 flex items-start gap-3">
+              <div class="service-icon no-tilt">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-white font-medium text-sm">App Design</p>
+                    <p class="text-gray-400 text-xs">iOS, Android, cross-platform</p>
+                  </div>
+                  <div class="price-tag">$4.2k <span>+</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motion Tab -->
+        <div class="tab-content" id="tab-motion">
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="service-icon no-tilt">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-white font-medium text-sm">Motion Graphics</p>
+                    <p class="text-gray-400 text-xs">Animation, transitions</p>
+                  </div>
+                  <div class="price-tag">$2.2k <span>+</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-white/5 pt-3 flex items-start gap-3">
+              <div class="service-icon no-tilt">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-white font-medium text-sm">3D Visualization</p>
+                    <p class="text-gray-400 text-xs">Blender, product renders</p>
+                  </div>
+                  <div class="price-tag">$3.8k <span>+</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial – tilt -->
+  <div class="glass-deep p-4 mb-4 tilt-card" id="testimonialCard">
+    <div class="tilt-content">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-custom overflow-hidden flex-shrink-0 avatar border border-gray-600">
+          <img src="https://i.pravatar.cc/100?img=47" alt="Client" class="w-full h-full object-cover grayscale">
+        </div>
+        <div>
+          <p class="testimonial-quote">"Absolutely transformed our brand. The attention to detail and motion work is exceptional."</p>
+          <p class="text-gray-400 text-xs mt-1">— Sarah Chen, Founder of Lumen</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Process / Stats -->
+  <div class="grid grid-cols-3 gap-3 mb-4">
+    <div class="glass p-3 text-center tilt-card" id="process1">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Discovery</p>
+        <p class="text-white text-lg font-bold">1-2w</p>
+      </div>
+    </div>
+    <div class="glass p-3 text-center tilt-card" id="process2">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Design</p>
+        <p class="text-white text-lg font-bold">3-4w</p>
+      </div>
+    </div>
+    <div class="glass p-3 text-center tilt-card" id="process3">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Delivery</p>
+        <p class="text-white text-lg font-bold">1-2w</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Highlights -->
+  <div class="mb-4">
+    <h2 class="text-white font-bold text-sm mb-2">Recent Work</h2>
+    <div class="glass-deep p-4 tilt-card" id="workCard">
+      <div class="tilt-content">
+        <div class="scroll-list space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-medium">Aurora Brand</p>
+                <p class="text-gray-400 text-xs">Identity, Web</p>
+              </div>
+            </div>
+            <svg class="w-4 h-4 text-gray-500 no-tilt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-medium">Flow App</p>
+                <p class="text-gray-400 text-xs">Mobile, UX</p>
+              </div>
+            </div>
+            <svg class="w-4 h-4 text-gray-500 no-tilt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-medium">Nebula Motion</p>
+                <p class="text-gray-400 text-xs">Animation, 3D</p>
+              </div>
+            </div>
+            <svg class="w-4 h-4 text-gray-500 no-tilt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA – tilt -->
+  <div class="glass-deep p-4 tilt-card" id="ctaCard">
+    <div class="tilt-content flex items-center justify-between">
+      <div>
+        <p class="text-white font-medium text-sm">Start your project</p>
+        <p class="text-gray-400 text-xs">Get a free consultation</p>
+      </div>
+      <div class="bg-white/10 px-4 py-2 rounded-custom no-tilt hover:bg-white/15 transition">
+        <span class="text-white text-sm font-medium">→ Let's talk</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-2"></div>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    // ---- GSAP entrance ----
+    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
+    tl.from(".phone-glass", { opacity: 0, y: 20, scale: 0.97, duration: 0.7 })
+      .from(".phone-glass > *", { opacity: 0, y: 8, stagger: 0.04, duration: 0.5 }, "-=0.3");
+
+    // ---- Anime micro-interactions ----
+    anime({
+      targets: '.service-icon',
+      scale: [0.95, 1],
+      duration: 800,
+      easing: 'easeOutQuad',
+      loop: true,
+      direction: 'alternate',
+      delay: anime.stagger(100)
+    });
+
+    anime({
+      targets: '.price-tag',
+      translateX: [0, 2, 0],
+      duration: 2000,
+      easing: 'easeInOutSine',
+      loop: true,
+      delay: anime.stagger(150)
+    });
+
+    // ---- TILT ::: all cards ----
+    const tiltCards = document.querySelectorAll('.tilt-card');
+    const MAX_TILT = 4.5;
+
+    tiltCards.forEach(card => {
+      let currentRotX = 0, currentRotY = 0;
+      let targetRotX = 0, targetRotY = 0;
+      let isHovering = false;
+
+      card.addEventListener('mouseenter', () => {
+        isHovering = true;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        isHovering = false;
+        targetRotX = 0;
+        targetRotY = 0;
+        gsap.to(card, {
+          boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      card.addEventListener('mousemove', (e) => {
+        if (!isHovering) return;
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotY = (x - 0.5) * 2 * MAX_TILT;
+        const rotX = (y - 0.5) * 2 * MAX_TILT;
+        targetRotX = rotX;
+        targetRotY = rotY;
+
+        const shadowX = (x - 0.5) * 8;
+        const shadowY = (y - 0.5) * 8;
+        gsap.to(card, {
+          boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
+          duration: 0.15,
+          ease: "power1.out"
+        });
+      });
+
+      function animateTilt() {
+        if (!isHovering) {
+          currentRotX += (0 - currentRotX) * 0.08;
+          currentRotY += (0 - currentRotY) * 0.08;
+        } else {
+          currentRotX += (targetRotX - currentRotX) * 0.12;
+          currentRotY += (targetRotY - currentRotY) * 0.12;
+        }
+
+        gsap.set(card, {
+          rotateX: currentRotX,
+          rotateY: currentRotY,
+          transformPerspective: 800,
+          duration: 0.01,
+          overwrite: 'auto'
+        });
+
+        requestAnimationFrame(animateTilt);
+      }
+
+      animateTilt();
+    });
+
+    // ---- Tabs ----
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = {
+      brand: document.getElementById('tab-brand'),
+      digital: document.getElementById('tab-digital'),
+      motion: document.getElementById('tab-motion')
+    };
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        Object.values(tabContents).forEach(content => {
+          content.classList.remove('active');
+        });
+
+        const tabId = this.dataset.tab;
+        if (tabContents[tabId]) {
+          tabContents[tabId].classList.add('active');
+        }
+      });
+    });
+
+    // ---- Extra polish ----
+    document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
+      gsap.from(el, { opacity: 0, y: 10, duration: 0.4, delay: 0.1 + i * 0.04, ease: "power2.out" });
+    });
+
+    // Avatar entrance
+    gsap.from('.avatar', { rotation: -3, scale: 0.9, opacity: 0, duration: 0.6, delay: 0.3, ease: "back.out(1.4)" });
+  });
+</script>
+
+</body>
+</html>

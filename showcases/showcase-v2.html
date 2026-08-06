@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass · Portfolio · Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP & Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0b0b0b;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 16px;
+    }
+
+    /* Glassmorphism – sharp 0.5rem, monochrome, blur */
+    .glass {
+      background: rgba(30, 30, 32, 0.35);
+      backdrop-filter: blur(12px) saturate(0.8);
+      -webkit-backdrop-filter: blur(12px) saturate(0.8);
+      border: 1px solid rgba(200, 200, 200, 0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+      border-radius: 0.5rem;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .glass-deep {
+      background: rgba(22, 22, 24, 0.5);
+      backdrop-filter: blur(16px) saturate(0.6);
+      -webkit-backdrop-filter: blur(16px) saturate(0.6);
+      border: 1px solid rgba(180, 180, 180, 0.06);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+      border-radius: 0.5rem;
+    }
+
+    .phone-glass {
+      background: rgba(16, 16, 18, 0.55);
+      backdrop-filter: blur(18px) saturate(0.5);
+      -webkit-backdrop-filter: blur(18px) saturate(0.5);
+      border: 1px solid rgba(180, 180, 180, 0.05);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    /* Grayscale */
+    img, svg, .icon { filter: grayscale(1); }
+    .avatar { border-radius: 0.5rem; filter: grayscale(1); }
+
+    .text-white { color: #f0f0f0; }
+    .text-gray-400 { color: #a0a0a0; }
+    .text-gray-500 { color: #808080; }
+    .text-xs { color: #b0b0b0; }
+
+    /* Tilt cards */
+    .tilt-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: box-shadow 0.2s ease;
+      cursor: default;
+      border-radius: 0.5rem;
+    }
+
+    .tilt-card .tilt-content {
+      transform-style: preserve-3d;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
+    .tilt-card .no-tilt {
+      transform: translateZ(0) !important;
+      backface-visibility: hidden;
+    }
+
+    .tilt-card .tilt-content > * {
+      transform: translateZ(0);
+    }
+
+    /* Skill badges */
+    .skill-badge {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 4px 12px;
+      border-radius: 0.5rem;
+      font-size: 11px;
+      color: #b0b0b0;
+      transition: all 0.2s;
+    }
+    .skill-badge:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    /* Project image placeholder */
+    .project-img {
+      background: linear-gradient(145deg, #1a1a1c, #0e0e0f);
+      border-radius: 0.5rem;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* Scrollable project list */
+    .project-list {
+      max-height: 240px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #444 transparent;
+    }
+    .project-list::-webkit-scrollbar {
+      width: 3px;
+    }
+    .project-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .project-list::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 10px;
+    }
+
+    /* Tab styling */
+    .tab-btn {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      padding: 4px 12px;
+      border-radius: 0.5rem;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      background: transparent;
+      border: 1px solid transparent;
+    }
+    .tab-btn.active {
+      background: rgba(255,255,255,0.06);
+      color: #f0f0f0;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="w-full max-w-md phone-glass p-6 relative overflow-hidden">
+
+  <!-- Status Bar -->
+  <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
+    <span class="tracking-wide">Portfolio</span>
+    <div class="flex space-x-1.5 items-center">
+      <div class="w-4 h-4 border border-gray-500 rounded-full flex items-center justify-center">
+        <span class="block w-2 h-2 bg-gray-400 rounded-full"></span>
+      </div>
+      <span class="text-[10px] tracking-widest opacity-70">●●●●●</span>
+    </div>
+  </div>
+
+  <!-- Header / Profile -->
+  <div class="flex items-center gap-4 mb-5">
+    <div class="w-16 h-16 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
+      <img src="https://i.pravatar.cc/150?img=11" alt="Avatar" class="w-full h-full object-cover grayscale">
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold text-white tracking-tight">Alex Rivera</h1>
+      <p class="text-gray-400 text-sm">Product Designer · Developer</p>
+      <div class="flex gap-2 mt-1">
+        <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-custom">UI/UX</span>
+        <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-custom">Framer</span>
+        <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-custom">React</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bio Card – tilt -->
+  <div class="glass-deep p-4 mb-4 tilt-card" id="bioCard">
+    <div class="tilt-content">
+      <p class="text-gray-300 text-sm leading-relaxed">
+        Crafting digital experiences with a focus on <span class="text-white">interaction</span> and 
+        <span class="text-white">motion</span>. 5+ years of designing products that people love.
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats Grid – 3 cards, all tilt -->
+  <div class="grid grid-cols-3 gap-3 mb-4">
+    <div class="glass p-3 text-center tilt-card" id="stat1">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Projects</p>
+        <p class="text-white text-2xl font-bold">48</p>
+      </div>
+    </div>
+    <div class="glass p-3 text-center tilt-card" id="stat2">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Clients</p>
+        <p class="text-white text-2xl font-bold">32</p>
+      </div>
+    </div>
+    <div class="glass p-3 text-center tilt-card" id="stat3">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Awards</p>
+        <p class="text-white text-2xl font-bold">7</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills & Tools – tilt -->
+  <div class="mb-4">
+    <h2 class="text-white font-bold text-sm mb-2">Skills & Tools</h2>
+    <div class="glass-deep p-4 tilt-card" id="skillsCard">
+      <div class="tilt-content">
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge">Figma</span>
+          <span class="skill-badge">Adobe XD</span>
+          <span class="skill-badge">Framer</span>
+          <span class="skill-badge">Webflow</span>
+          <span class="skill-badge">React</span>
+          <span class="skill-badge">GSAP</span>
+          <span class="skill-badge">Tailwind</span>
+          <span class="skill-badge">Blender</span>
+          <span class="skill-badge">After Effects</span>
+          <span class="skill-badge">Unity</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects – with Tabs -->
+  <div class="mb-4">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="text-white font-bold text-sm">Projects</h2>
+      <div class="flex space-x-1">
+        <button class="tab-btn active" data-tab="featured">Featured</button>
+        <button class="tab-btn" data-tab="all">All</button>
+        <button class="tab-btn" data-tab="archive">Archive</button>
+      </div>
+    </div>
+
+    <div class="glass-deep p-4 tilt-card" id="projectsCard">
+      <div class="tilt-content">
+        <!-- Featured -->
+        <div class="tab-content active" id="tab-featured">
+          <div class="space-y-3">
+            <div>
+              <div class="project-img mb-2">
+                <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-white font-medium text-sm">Nebula Dashboard</p>
+                  <p class="text-gray-400 text-xs">Data visualization · 2025</p>
+                </div>
+                <svg class="w-4 h-4 text-gray-500 no-tilt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+              </div>
+            </div>
+            <div className="border-t border-white/5 pt-3">
+              <div class="project-img mb-2">
+                <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-white font-medium text-sm">Flow Mobile App</p>
+                  <p class="text-gray-400 text-xs">iOS/Android · 2024</p>
+                </div>
+                <svg class="w-4 h-4 text-gray-500 no-tilt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Projects -->
+        <div class="tab-content" id="tab-all">
+          <div class="project-list space-y-2">
+            <div class="flex items-center justify-between py-1 border-b border-white/5">
+              <div>
+                <p class="text-white text-sm font-medium">Nebula Dashboard</p>
+                <p class="text-gray-400 text-xs">Data viz · 2025</p>
+              </div>
+              <span class="text-gray-500 text-xs">UI/UX</span>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-white/5">
+              <div>
+                <p class="text-white text-sm font-medium">Flow Mobile App</p>
+                <p class="text-gray-400 text-xs">iOS/Android · 2024</p>
+              </div>
+              <span class="text-gray-500 text-xs">Product</span>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-white/5">
+              <div>
+                <p class="text-white text-sm font-medium">EcoTrack Web</p>
+                <p class="text-gray-400 text-xs">Sustainability · 2024</p>
+              </div>
+              <span class="text-gray-500 text-xs">Web</span>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-white/5">
+              <div>
+                <p class="text-white text-sm font-medium">Pixel Studio</p>
+                <p class="text-gray-400 text-xs">Creative tool · 2023</p>
+              </div>
+              <span class="text-gray-500 text-xs">Desktop</span>
+            </div>
+            <div class="flex items-center justify-between py-1">
+              <div>
+                <p class="text-white text-sm font-medium">Aurora Brand</p>
+                <p class="text-gray-400 text-xs">Identity · 2023</p>
+              </div>
+              <span class="text-gray-500 text-xs">Branding</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Archive -->
+        <div class="tab-content" id="tab-archive">
+          <div class="space-y-2 text-gray-400 text-sm">
+            <p>• Legacy projects (2020-2022)</p>
+            <p>• Internal tools & prototypes</p>
+            <p>• Experimental interfaces</p>
+            <p class="text-gray-500 text-xs mt-2">12 archived projects</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact / CTA – tilt -->
+  <div class="glass-deep p-4 tilt-card" id="contactCard">
+    <div class="tilt-content flex items-center justify-between">
+      <div>
+        <p class="text-white font-medium text-sm">Let's work together</p>
+        <p class="text-gray-400 text-xs">Open for collaborations</p>
+      </div>
+      <div class="flex gap-2">
+        <div class="w-8 h-8 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </div>
+        <div class="w-8 h-8 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-2"></div>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    // ---- GSAP entrance ----
+    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
+    tl.from(".phone-glass", { opacity: 0, y: 20, scale: 0.97, duration: 0.7 })
+      .from(".phone-glass > *", { opacity: 0, y: 8, stagger: 0.05, duration: 0.5 }, "-=0.3");
+
+    // ---- Anime micro-interactions ----
+    anime({
+      targets: '.skill-badge',
+      scale: [0.95, 1],
+      duration: 600,
+      easing: 'easeOutQuad',
+      loop: true,
+      direction: 'alternate',
+      delay: anime.stagger(50)
+    });
+
+    anime({
+      targets: '.project-img svg',
+      rotate: [0, 3, 0],
+      duration: 3000,
+      easing: 'easeInOutSine',
+      loop: true,
+      delay: anime.stagger(200)
+    });
+
+    // ---- TILT ::: all cards, MAX_TILT = 4.5 ----
+    const tiltCards = document.querySelectorAll('.tilt-card');
+    const MAX_TILT = 4.5;
+
+    tiltCards.forEach(card => {
+      let currentRotX = 0, currentRotY = 0;
+      let targetRotX = 0, targetRotY = 0;
+      let isHovering = false;
+
+      card.addEventListener('mouseenter', () => {
+        isHovering = true;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        isHovering = false;
+        targetRotX = 0;
+        targetRotY = 0;
+        gsap.to(card, {
+          boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      card.addEventListener('mousemove', (e) => {
+        if (!isHovering) return;
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotY = (x - 0.5) * 2 * MAX_TILT;
+        const rotX = (y - 0.5) * 2 * MAX_TILT;
+        targetRotX = rotX;
+        targetRotY = rotY;
+
+        const shadowX = (x - 0.5) * 8;
+        const shadowY = (y - 0.5) * 8;
+        gsap.to(card, {
+          boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
+          duration: 0.15,
+          ease: "power1.out"
+        });
+      });
+
+      function animateTilt() {
+        if (!isHovering) {
+          currentRotX += (0 - currentRotX) * 0.08;
+          currentRotY += (0 - currentRotY) * 0.08;
+        } else {
+          currentRotX += (targetRotX - currentRotX) * 0.12;
+          currentRotY += (targetRotY - currentRotY) * 0.12;
+        }
+
+        gsap.set(card, {
+          rotateX: currentRotX,
+          rotateY: currentRotY,
+          transformPerspective: 800,
+          duration: 0.01,
+          overwrite: 'auto'
+        });
+
+        requestAnimationFrame(animateTilt);
+      }
+
+      animateTilt();
+    });
+
+    // ---- Tabs ----
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = {
+      featured: document.getElementById('tab-featured'),
+      all: document.getElementById('tab-all'),
+      archive: document.getElementById('tab-archive')
+    };
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        Object.values(tabContents).forEach(content => {
+          content.classList.remove('active');
+        });
+
+        const tabId = this.dataset.tab;
+        if (tabContents[tabId]) {
+          tabContents[tabId].classList.add('active');
+        }
+      });
+    });
+
+    // ---- Avatar entrance ----
+    gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.7, delay: 0.3, ease: "back.out(1.4)" });
+
+    // ---- Extra polish ----
+    document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
+      gsap.from(el, { opacity: 0, y: 10, duration: 0.5, delay: 0.1 + i * 0.06, ease: "power2.out" });
+    });
+  });
+</script>
+
+</body>
+</html>
