@@ -344,6 +344,24 @@
       color: #666;
     }
 
+    /* Avatar initials */
+    .avatar-initials {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: #a0a0a0;
+      background: linear-gradient(145deg, #1a1a1c, #0e0e0f);
+      letter-spacing: 1px;
+    }
+
+    .avatar-initials-lg {
+      font-size: 32px;
+    }
+
     @media (max-width: 480px) {
       .phone-glass {
         padding: 16px;
@@ -363,6 +381,12 @@
       .showcase-icon {
         font-size: 22px;
       }
+      .avatar-initials {
+        font-size: 20px;
+      }
+      .avatar-initials-lg {
+        font-size: 26px;
+      }
     }
   </style>
 </head>
@@ -380,7 +404,7 @@
         <span></span>
       </div>
       <div class="w-8 h-8 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
-        <img src="https://i.pravatar.cc/100?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+        <div class="avatar-initials">YW</div>
       </div>
     </div>
   </div>
@@ -388,7 +412,7 @@
   <!-- Header / Profile -->
   <div class="flex items-center gap-4 mb-5">
     <div class="w-16 h-16 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
-      <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+      <div class="avatar-initials avatar-initials-lg">YW</div>
     </div>
     <div>
       <h1 class="text-2xl font-bold text-white tracking-tight">YewsWsi</h1>
@@ -794,7 +818,14 @@
       delay: anime.stagger(100)
     });
 
-    gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.7, delay: 0.3, ease: "back.out(1.4)" });
+    gsap.from('.avatar-initials', { 
+      rotation: -5, 
+      scale: 0.9, 
+      opacity: 0, 
+      duration: 0.7, 
+      delay: 0.3, 
+      ease: "back.out(1.4)" 
+    });
     
     document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
       gsap.from(el, { opacity: 0, y: 10, duration: 0.5, delay: 0.1 + i * 0.06, ease: "power2.out" });
