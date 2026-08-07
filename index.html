@@ -8,90 +8,224 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Additional styles for the new layout */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 24px;
+    }
+    
+    .nav-tab {
+      padding: 8px 20px;
+      border-radius: 0.75rem;
+      font-size: 13px;
+      font-weight: 500;
+      color: #888;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-tab:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .nav-tab.active {
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+    }
+    
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.04);
+      margin-bottom: 24px;
+    }
+    
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1);
+    }
+    
+    .profile-info h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0f0f0;
+      margin: 0;
+    }
+    
+    .profile-info .handle {
+      font-size: 13px;
+      color: #888;
+      margin: 2px 0 8px 0;
+    }
+    
+    .profile-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .profile-tag {
+      padding: 3px 12px;
+      border-radius: 0.5rem;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+      color: #a0a0a0;
+    }
+    
+    .profile-tag:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    
+    .made-by {
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+      padding: 12px 0 4px 0;
+      letter-spacing: 0.5px;
+    }
+    
+    .made-by span {
+      color: #888;
+    }
+    
+    .showcase-card {
+      padding: 16px 20px;
+    }
+    
+    .showcase-card .tilt-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+    
+    @media (max-width: 480px) {
+      .profile-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+      }
+      
+      .profile-tags {
+        justify-content: center;
+      }
+      
+      .nav-tabs {
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 6px;
+      }
+      
+      .nav-tab {
+        padding: 6px 14px;
+        font-size: 11px;
+      }
+      
+      .showcase-card {
+        padding: 12px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <div class="phone-glass" id="app">
 
-  <!-- ===== NAVIGATION BAR (Top Center) ===== -->
-  <nav class="nav-bar">
-    <div class="nav-links">
-      <a href="#" class="nav-link active"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="#" class="nav-link"><i class="fas fa-folder"></i> Projects</a>
-      <a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
-    </div>
-  </nav>
-
-  <!-- ===== PROFILE SECTION ===== -->
-  <section class="profile-section">
-    <div class="profile-header">
-      <div class="profile-avatar-wrapper">
-        <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="profile-avatar" />
-        <div class="status-badge online"></div>
+  <!-- Status Bar -->
+  <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
+    <span class="tracking-wide"><i class="fas fa-gem mr-2 text-gray-500"></i>Dashboard</span>
+    <div class="flex items-center gap-3">
+      <span class="text-[10px] tracking-widest opacity-60">✦✦✦✦✦</span>
+      <div class="w-8 h-8 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
+        <img src="https://i.pravatar.cc/100?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
       </div>
-      <div class="profile-info">
-        <h1 class="profile-name">YewsWsi</h1>
-        <p class="profile-title">Creative Developer · Designer</p>
-        <div class="tags-container">
-          <span class="tag-badge"><i class="fas fa-code"></i> Developer</span>
-          <span class="tag-badge"><i class="fas fa-pen-fancy"></i> Designer</span>
-          <span class="tag-badge"><i class="fas fa-terminal"></i> Scripter</span>
-          <span class="tag-badge"><i class="fas fa-rocket"></i> Creator</span>
-        </div>
-        <div class="profile-stats">
-          <span><i class="fas fa-folder"></i> <span id="projectCount">0 projects</span></span>
-          <span><i class="fas fa-star"></i> 5 showcases</span>
-          <span><i class="fas fa-calendar"></i> 2025</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== TABS ===== -->
-  <div class="tabs-container">
-    <div class="tab-buttons">
-      <button class="tab-btn active" data-tab="all"><i class="fas fa-th"></i> All</button>
-      <button class="tab-btn" data-tab="fitness"><i class="fas fa-heart"></i> Fitness</button>
-      <button class="tab-btn" data-tab="design"><i class="fas fa-palette"></i> Design</button>
-      <button class="tab-btn" data-tab="agency"><i class="fas fa-building"></i> Agency</button>
-      <button class="tab-btn" data-tab="analytics"><i class="fas fa-chart-line"></i> Analytics</button>
     </div>
   </div>
 
-  <!-- ===== PROJECTS GRID ===== -->
-  <div class="projects-section">
-    <div class="scroll-list" id="showcaseList">
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+    <button class="nav-tab" data-tab="projects">Projects</button>
+    <button class="nav-tab" data-tab="about">About</button>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div id="dashboardContent">
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="profile-avatar">
+        <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" />
+      </div>
+      <div class="profile-info">
+        <h2>YewsWsi</h2>
+        <p class="handle">@yewswsi · Creative Developer</p>
+        <div class="profile-tags">
+          <span class="profile-tag"><i class="fas fa-code mr-1"></i>Developer</span>
+          <span class="profile-tag"><i class="fas fa-pen-fancy mr-1"></i>Designer</span>
+          <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Creator</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects Header -->
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="text-white font-bold text-sm flex items-center gap-2">
+        <i class="fas fa-cube text-gray-400 text-xs"></i>
+        Showcase Projects
+      </h2>
+      <span class="text-gray-500 text-[10px] flex items-center gap-1">
+        <span class="status-dot online"></span> 5 projects
+      </span>
+    </div>
+
+    <!-- Showcase List -->
+    <div class="scroll-list space-y-3" id="showcaseList">
       <!-- Cards injected by JavaScript -->
     </div>
   </div>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    <div class="glass-deep p-4 tilt-card no-tilt">
-      <div class="tilt-content flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <i class="fas fa-gem text-xl text-gray-500"></i>
-          <div>
-            <p class="text-white font-medium text-sm">Made by YewsWsi</p>
-            <p class="text-gray-400 text-xs">✦ Interactive Showcase ✦</p>
-          </div>
-        </div>
-        <div class="social-icons">
-          <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
+  <!-- Made By Footer -->
+  <div class="made-by">
+    <span>✦ Made by <span>YewsWsi</span> ✦</span>
+  </div>
+  
   <div class="h-2"></div>
 </div>
 
-<!-- ===== MODAL ===== -->
+<!-- Modal Overlay -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content">
-    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i> Close</button>
+    <button class="modal-close" id="modalClose"><i class="fas fa-times mr-1"></i> Close</button>
     <div id="modalBody">
       <div class="flex items-center gap-3 mb-3">
         <div class="preview-icon no-tilt"><i class="fas fa-eye text-gray-400"></i></div>
