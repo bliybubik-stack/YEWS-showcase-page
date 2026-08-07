@@ -3,179 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YewsWsi · Developer Portfolio</title>
-  <!-- External CSS -->
+  <title>YewsWsi · Showcase Dashboard</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- GSAP & Anime.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
-<div class="app-container">
+<div class="phone-glass" id="app">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-icon">
-        <i class="fas fa-cube"></i>
+  <!-- Profile Header -->
+  <div class="profile-header mb-5">
+    <div class="flex items-center gap-4">
+      <div class="avatar-wrapper">
+        <div class="avatar-ring">
+          <div class="avatar-large overflow-hidden">
+            <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+          </div>
+        </div>
       </div>
-      <span class="brand-name">YEWS</span>
-    </div>
-
-    <nav class="sidebar-nav">
-      <a href="#" class="nav-link active">
-        <i class="fas fa-th-large"></i>
-        <span>Showcase</span>
-      </a>
-      <a href="#" class="nav-link">
-        <i class="fas fa-user"></i>
-        <span>About</span>
-      </a>
-      <a href="#" class="nav-link">
-        <i class="fas fa-code"></i>
-        <span>Skills</span>
-      </a>
-      <a href="#" class="nav-link">
-        <i class="fas fa-envelope"></i>
-        <span>Contact</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="status-indicator">
-        <span class="status-dot online"></span>
-        <span class="status-text">Available</span>
+      <div class="flex-1">
+        <div class="flex items-center gap-2">
+          <h1 class="text-2xl font-bold text-white">YewsWsi</h1>
+          <span class="verified-badge"><i class="fas fa-check-circle"></i></span>
+        </div>
+        <p class="text-gray-400 text-sm">Creative Developer & Designer</p>
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          <span class="tag">Dev</span>
+          <span class="tag">Scripter</span>
+          <span class="tag">Designer</span>
+          <span class="tag">UI/UX</span>
+        </div>
       </div>
     </div>
-  </aside>
+    <div class="made-by mt-2">
+      <span class="text-gray-500 text-[10px] tracking-wider"><i class="fas fa-code"></i> Made by YewsWsi</span>
+    </div>
+  </div>
 
-  <!-- Main Content -->
-  <main class="main-content">
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge">✦ Portfolio</span>
-          <span class="badge">2025</span>
-        </div>
-        <h1 class="hero-title">
-          Showcase<br />
-          <span class="hero-highlight">Collection</span>
-        </h1>
-        <p class="hero-subtitle">
-          Interactive glassmorphism projects built with GSAP, Anime.js & Tailwind
-        </p>
-        <div class="hero-actions">
-          <button class="btn-primary" id="viewAllBtn">
-            <i class="fas fa-rocket"></i> View All Projects
-          </button>
-          <button class="btn-secondary">
-            <i class="fas fa-github"></i> GitHub
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats -->
-    <section class="stats-grid">
-      <div class="stat-card glass">
-        <div class="stat-icon"><i class="fas fa-folder-open"></i></div>
-        <div class="stat-value" data-target="5">0</div>
+  <!-- Stats Row -->
+  <div class="stats-row grid grid-cols-3 gap-2 mb-4">
+    <div class="glass stat-card tilt-card">
+      <div class="tilt-content text-center">
+        <div class="stat-icon"><i class="fas fa-cube icon-gray"></i></div>
+        <div class="stat-value" id="projectCount">5</div>
         <div class="stat-label">Projects</div>
       </div>
-      <div class="stat-card glass">
-        <div class="stat-icon"><i class="fas fa-star"></i></div>
-        <div class="stat-value" data-target="12">0</div>
-        <div class="stat-label">Awards</div>
+    </div>
+    <div class="glass stat-card tilt-card">
+      <div class="tilt-content text-center">
+        <div class="stat-icon"><i class="fas fa-code icon-gray"></i></div>
+        <div class="stat-value">12</div>
+        <div class="stat-label">Scripts</div>
       </div>
-      <div class="stat-card glass">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <div class="stat-value" data-target="28">0</div>
-        <div class="stat-label">Clients</div>
+    </div>
+    <div class="glass stat-card tilt-card">
+      <div class="tilt-content text-center">
+        <div class="stat-icon"><i class="fas fa-star icon-gray"></i></div>
+        <div class="stat-value">4.9</div>
+        <div class="stat-label">Rating</div>
       </div>
-      <div class="stat-card glass">
-        <div class="stat-icon"><i class="fas fa-code"></i></div>
-        <div class="stat-value" data-target="47">0</div>
-        <div class="stat-label">Projects</div>
-      </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- Tabs & Projects -->
-    <section class="projects-section">
-      <div class="tabs-container">
-        <div class="tabs-header">
-          <div class="tabs-buttons">
-            <button class="tab-btn active" data-tab="all">
-              <i class="fas fa-th"></i> All
-            </button>
-            <button class="tab-btn" data-tab="ui-ux">
-              <i class="fas fa-paint-brush"></i> UI/UX
-            </button>
-            <button class="tab-btn" data-tab="web">
-              <i class="fas fa-globe"></i> Web
-            </button>
-            <button class="tab-btn" data-tab="data">
-              <i class="fas fa-chart-bar"></i> Data
-            </button>
-          </div>
-          <span class="project-count" id="projectCount">5 projects</span>
-        </div>
+  <!-- Tabs -->
+  <div class="tabs-container mb-3">
+    <div class="flex gap-1">
+      <button class="tab-btn active" data-tab="all">All</button>
+      <button class="tab-btn" data-tab="fitness">Fitness</button>
+      <button class="tab-btn" data-tab="portfolio">Portfolio</button>
+      <button class="tab-btn" data-tab="studio">Studio</button>
+      <button class="tab-btn" data-tab="agency">Agency</button>
+      <button class="tab-btn" data-tab="analytics">Analytics</button>
+    </div>
+  </div>
 
-        <div class="tab-content active" id="tab-all">
-          <div class="showcase-grid" id="showcaseList">
-            <!-- Cards rendered by JavaScript -->
-          </div>
-        </div>
+  <!-- Showcase Grid -->
+  <div class="showcase-grid mb-4">
+    <div class="scroll-list space-y-3" id="showcaseList">
+      <!-- Cards injected by JavaScript -->
+    </div>
+  </div>
 
-        <div class="tab-content" id="tab-ui-ux">
-          <div class="showcase-grid" id="showcaseList-ui-ux">
-            <!-- Filtered by JavaScript -->
-          </div>
-        </div>
-
-        <div class="tab-content" id="tab-web">
-          <div class="showcase-grid" id="showcaseList-web">
-            <!-- Filtered by JavaScript -->
-          </div>
-        </div>
-
-        <div class="tab-content" id="tab-data">
-          <div class="showcase-grid" id="showcaseList-data">
-            <!-- Filtered by JavaScript -->
-          </div>
+  <!-- Footer -->
+  <div class="glass-deep p-4 tilt-card">
+    <div class="tilt-content flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-github text-xl text-gray-500 no-tilt"></i>
+        <div>
+          <p class="text-white font-medium text-sm">GitHub Pages</p>
+          <p class="text-gray-400 text-xs">hosted with ✦</p>
         </div>
       </div>
-    </section>
+      <div class="flex gap-2">
+        <span class="badge">glass</span>
+        <span class="badge">tilt</span>
+        <span class="badge">gsap</span>
+        <span class="badge">anime</span>
+      </div>
+    </div>
+  </div>
 
-  </main>
+  <div class="h-2"></div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Overlay -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content">
-    <button class="modal-close" id="modalClose">
-      <i class="fas fa-times"></i>
-    </button>
-    <div class="modal-header">
-      <div class="modal-header-icon">
-        <i class="fas fa-eye"></i>
+    <button class="modal-close" id="modalClose"><i class="fas fa-times mr-1"></i> Close</button>
+    <div id="modalBody">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="preview-icon no-tilt"><i class="fas fa-eye text-gray-400"></i></div>
+        <div>
+          <h3 class="text-white font-bold text-lg" id="modalTitle">Showcase</h3>
+          <p class="text-gray-400 text-xs" id="modalSub">preview</p>
+        </div>
       </div>
-      <div>
-        <h3 class="modal-title" id="modalTitle">Showcase</h3>
-        <p class="modal-subtitle" id="modalSub">Preview</p>
-      </div>
-    </div>
-    <div class="modal-body">
       <iframe id="modalIframe" src="" frameborder="0" loading="lazy"></iframe>
     </div>
   </div>
 </div>
 
-<!-- External JavaScript -->
 <script src="app.js"></script>
 </body>
 </html>
