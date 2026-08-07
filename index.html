@@ -3,120 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YewsWsi · Creative Developer</title>
+  <title>YewsWsi · Developer Portfolio</title>
+  <!-- External CSS -->
   <link rel="stylesheet" href="style.css" />
+  <!-- GSAP & Anime.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
-<div class="phone-glass" id="app">
+<div class="app-container">
 
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span class="status-time">22:48</span>
-    <div class="status-icons">
-      <span class="status-dot"></span>
-      <span class="signal-bars">●●●●●</span>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-cube"></i>
+      </div>
+      <span class="brand-name">YEWS</span>
     </div>
-  </div>
 
-  <!-- Hero Section -->
-  <div class="hero-section">
-    <div class="hero-badge">✦ Made by YewsWsi</div>
-    <h1 class="hero-title">YewsWsi</h1>
-    <p class="hero-subtitle">Creative Developer</p>
-    
-    <div class="hero-tags">
-      <span class="hero-tag"><i class="fas fa-code"></i> Dev</span>
-      <span class="hero-tag"><i class="fas fa-terminal"></i> Scripter</span>
-      <span class="hero-tag"><i class="fas fa-paint-brush"></i> Designer</span>
-      <span class="hero-tag"><i class="fas fa-lightbulb"></i> Creator</span>
-    </div>
-  </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link active">
+        <i class="fas fa-th-large"></i>
+        <span>Showcase</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-user"></i>
+        <span>About</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-code"></i>
+        <span>Skills</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-envelope"></i>
+        <span>Contact</span>
+      </a>
+    </nav>
 
-  <!-- Stats Row -->
-  <div class="stats-row">
-    <div class="stat-card glass tilt-card">
-      <div class="tilt-content">
-        <span class="stat-number">5</span>
-        <span class="stat-label">Projects</span>
+    <div class="sidebar-footer">
+      <div class="status-indicator">
+        <span class="status-dot online"></span>
+        <span class="status-text">Available</span>
       </div>
     </div>
-    <div class="stat-card glass tilt-card">
-      <div class="tilt-content">
-        <span class="stat-number">12</span>
-        <span class="stat-label">Technologies</span>
-      </div>
-    </div>
-    <div class="stat-card glass tilt-card">
-      <div class="tilt-content">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">Glass</span>
-      </div>
-    </div>
-  </div>
+  </aside>
 
-  <!-- Projects Header -->
-  <div class="projects-header">
-    <div class="projects-title">
-      <h2>Showcase Collection</h2>
-      <span class="project-count">5 interactive projects</span>
-    </div>
-    <div class="projects-tags">
-      <span class="glass-tag">glass</span>
-      <span class="glass-tag">tilt</span>
-      <span class="glass-tag">gsap</span>
-    </div>
-  </div>
+  <!-- Main Content -->
+  <main class="main-content">
 
-  <!-- Tabs -->
-  <div class="tabs-container">
-    <button class="tab-btn active" data-tab="all">All</button>
-    <button class="tab-btn" data-tab="fitness">Fitness</button>
-    <button class="tab-btn" data-tab="portfolio">Portfolio</button>
-    <button class="tab-btn" data-tab="studio">Studio</button>
-    <button class="tab-btn" data-tab="agency">Agency</button>
-    <button class="tab-btn" data-tab="analytics">Analytics</button>
-  </div>
-
-  <!-- Project Grid -->
-  <div class="project-grid" id="showcaseList">
-    <!-- Cards injected by JavaScript -->
-  </div>
-
-  <!-- Footer -->
-  <div class="footer-section glass-deep tilt-card">
-    <div class="tilt-content footer-content">
-      <div class="footer-brand">
-        <i class="fas fa-gem"></i>
-        <span>YewsWsi Studio</span>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge">✦ Portfolio</span>
+          <span class="badge">2025</span>
+        </div>
+        <h1 class="hero-title">
+          Showcase<br />
+          <span class="hero-highlight">Collection</span>
+        </h1>
+        <p class="hero-subtitle">
+          Interactive glassmorphism projects built with GSAP, Anime.js & Tailwind
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="viewAllBtn">
+            <i class="fas fa-rocket"></i> View All Projects
+          </button>
+          <button class="btn-secondary">
+            <i class="fas fa-github"></i> GitHub
+          </button>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="#" class="footer-link"><i class="fab fa-github"></i></a>
-        <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="footer-link"><i class="fab fa-dribbble"></i></a>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-grid">
+      <div class="stat-card glass">
+        <div class="stat-icon"><i class="fas fa-folder-open"></i></div>
+        <div class="stat-value" data-target="5">0</div>
+        <div class="stat-label">Projects</div>
       </div>
-    </div>
-  </div>
+      <div class="stat-card glass">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <div class="stat-value" data-target="12">0</div>
+        <div class="stat-label">Awards</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-value" data-target="28">0</div>
+        <div class="stat-label">Clients</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon"><i class="fas fa-code"></i></div>
+        <div class="stat-value" data-target="47">0</div>
+        <div class="stat-label">Projects</div>
+      </div>
+    </section>
+
+    <!-- Tabs & Projects -->
+    <section class="projects-section">
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <div class="tabs-buttons">
+            <button class="tab-btn active" data-tab="all">
+              <i class="fas fa-th"></i> All
+            </button>
+            <button class="tab-btn" data-tab="ui-ux">
+              <i class="fas fa-paint-brush"></i> UI/UX
+            </button>
+            <button class="tab-btn" data-tab="web">
+              <i class="fas fa-globe"></i> Web
+            </button>
+            <button class="tab-btn" data-tab="data">
+              <i class="fas fa-chart-bar"></i> Data
+            </button>
+          </div>
+          <span class="project-count" id="projectCount">5 projects</span>
+        </div>
+
+        <div class="tab-content active" id="tab-all">
+          <div class="showcase-grid" id="showcaseList">
+            <!-- Cards rendered by JavaScript -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-ui-ux">
+          <div class="showcase-grid" id="showcaseList-ui-ux">
+            <!-- Filtered by JavaScript -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-web">
+          <div class="showcase-grid" id="showcaseList-web">
+            <!-- Filtered by JavaScript -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-data">
+          <div class="showcase-grid" id="showcaseList-data">
+            <!-- Filtered by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <!-- Modal -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content">
-    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i> Close</button>
+    <button class="modal-close" id="modalClose">
+      <i class="fas fa-times"></i>
+    </button>
     <div class="modal-header">
-      <div class="modal-icon"><i class="fas fa-eye"></i></div>
+      <div class="modal-header-icon">
+        <i class="fas fa-eye"></i>
+      </div>
       <div>
-        <h3 id="modalTitle">Showcase Preview</h3>
-        <p id="modalSub">Interactive glass project</p>
+        <h3 class="modal-title" id="modalTitle">Showcase</h3>
+        <p class="modal-subtitle" id="modalSub">Preview</p>
       </div>
     </div>
-    <iframe id="modalIframe" src="" frameborder="0" loading="lazy"></iframe>
+    <div class="modal-body">
+      <iframe id="modalIframe" src="" frameborder="0" loading="lazy"></iframe>
+    </div>
   </div>
 </div>
 
+<!-- External JavaScript -->
 <script src="app.js"></script>
 </body>
 </html>
