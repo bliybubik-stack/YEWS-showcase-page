@@ -3,26 +3,214 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YewsWsi · Portfolio Studio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- GSAP & Anime.js -->
+  <title>YewsWsi · Showcase Studio</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: #0b0b0b;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
       margin: 0;
-      padding: 16px;
     }
 
-    /* Glassmorphism */
+    /* Main container - split screen */
+    .studio-container {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      max-width: 1440px;
+      height: 90vh;
+      min-height: 700px;
+    }
+
+    /* Left Panel - Dashboard */
+    .dashboard-panel {
+      width: 380px;
+      min-width: 320px;
+      background: rgba(16, 16, 18, 0.55);
+      backdrop-filter: blur(18px) saturate(0.5);
+      -webkit-backdrop-filter: blur(18px) saturate(0.5);
+      border: 1px solid rgba(180, 180, 180, 0.05);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding: 24px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .dashboard-panel::-webkit-scrollbar {
+      width: 3px;
+    }
+    .dashboard-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dashboard-panel::-webkit-scrollbar-thumb {
+      background: #444;
+      border-radius: 10px;
+    }
+
+    /* Right Panel - Preview + Editor */
+    .preview-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .preview-container {
+      flex: 1;
+      background: rgba(16, 16, 18, 0.55);
+      backdrop-filter: blur(18px) saturate(0.5);
+      -webkit-backdrop-filter: blur(18px) saturate(0.5);
+      border: 1px solid rgba(180, 180, 180, 0.05);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 400px;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .preview-header h3 {
+      color: #f0f0f0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .preview-header .preview-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .preview-controls button {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 0.5rem;
+      color: #888;
+      padding: 4px 12px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preview-controls button:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    .preview-controls button.active {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .preview-frame {
+      flex: 1;
+      border-radius: 1rem;
+      overflow: hidden;
+      background: #0b0b0b;
+      border: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+      min-height: 300px;
+    }
+
+    .preview-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #0b0b0b;
+    }
+
+    .preview-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #555;
+      gap: 12px;
+    }
+    .preview-empty i {
+      font-size: 48px;
+      color: #333;
+    }
+    .preview-empty p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Editor panel */
+    .editor-panel {
+      background: rgba(16, 16, 18, 0.55);
+      backdrop-filter: blur(18px) saturate(0.5);
+      -webkit-backdrop-filter: blur(18px) saturate(0.5);
+      border: 1px solid rgba(180, 180, 180, 0.05);
+      border-radius: 1.5rem;
+      padding: 16px 20px;
+      flex-shrink: 0;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .editor-header span {
+      color: #666;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .editor-content {
+      display: flex;
+      gap: 12px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .editor-content .code-line {
+      color: #888;
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+      background: rgba(255,255,255,0.03);
+      padding: 6px 12px;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.04);
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .editor-content .code-line .hl {
+      color: #b0b0b0;
+    }
+
+    .editor-content .code-line .str {
+      color: #8a8a8a;
+    }
+
+    /* Glass components */
     .glass {
       background: rgba(30, 30, 32, 0.35);
       backdrop-filter: blur(12px) saturate(0.8);
@@ -30,7 +218,6 @@
       border: 1px solid rgba(200, 200, 200, 0.08);
       box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
       border-radius: 0.5rem;
-      transition: box-shadow 0.2s ease;
     }
 
     .glass-deep {
@@ -42,113 +229,11 @@
       border-radius: 0.5rem;
     }
 
-    /* Main container - split screen */
-    .studio-container {
-      display: flex;
-      gap: 20px;
-      width: 100%;
-      max-width: 1400px;
-      height: 90vh;
-      min-height: 600px;
-    }
-
-    /* Left panel - Portfolio */
-    .portfolio-panel {
-      flex: 0 0 380px;
-      background: rgba(16, 16, 18, 0.55);
-      backdrop-filter: blur(18px) saturate(0.5);
-      -webkit-backdrop-filter: blur(18px) saturate(0.5);
-      border: 1px solid rgba(180, 180, 180, 0.05);
-      border-radius: 2rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
-      padding: 24px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #444 transparent;
-    }
-    .portfolio-panel::-webkit-scrollbar { width: 3px; }
-    .portfolio-panel::-webkit-scrollbar-track { background: transparent; }
-    .portfolio-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
-
-    /* Right panel - Preview */
-    .preview-panel {
-      flex: 1;
-      background: rgba(16, 16, 18, 0.55);
-      backdrop-filter: blur(18px) saturate(0.5);
-      -webkit-backdrop-filter: blur(18px) saturate(0.5);
-      border: 1px solid rgba(180, 180, 180, 0.05);
-      border-radius: 2rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .preview-frame {
-      flex: 1;
-      background: #0b0b0b;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255,255,255,0.04);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .preview-frame iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: #0b0b0b;
-    }
-
-    .preview-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      margin-bottom: 12px;
-    }
-
-    .preview-header h3 {
-      color: #f0f0f0;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .preview-header .preview-tabs {
-      display: flex;
-      gap: 8px;
-    }
-
-    .preview-tab {
-      padding: 4px 12px;
-      border-radius: 0.5rem;
-      font-size: 10px;
-      font-weight: 600;
-      color: #888;
-      background: transparent;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .preview-tab.active {
-      background: rgba(255,255,255,0.06);
-      color: #f0f0f0;
-      border-color: rgba(255,255,255,0.08);
-    }
-    .preview-tab:hover {
-      color: #fff;
-      background: rgba(255,255,255,0.04);
-    }
-
-    /* Grayscale */
-    img, svg, .icon { filter: grayscale(1); }
-    .avatar { border-radius: 0.5rem; filter: grayscale(1); }
-
     .text-white { color: #f0f0f0; }
     .text-gray-400 { color: #a0a0a0; }
     .text-gray-500 { color: #808080; }
+
+    .avatar { border-radius: 0.5rem; filter: grayscale(1); }
 
     /* Tilt cards */
     .tilt-card {
@@ -171,42 +256,28 @@
       transform: translateZ(0);
     }
 
-    /* Skill badges */
-    .skill-badge {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      padding: 4px 12px;
-      border-radius: 0.5rem;
-      font-size: 10px;
-      color: #b0b0b0;
-      transition: all 0.2s;
-      cursor: default;
-    }
-    .skill-badge:hover {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-
-    /* Project cards in left panel */
-    .project-item {
+    /* Showcase cards */
+    .showcase-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.04);
       border-radius: 0.5rem;
       padding: 12px 16px;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
       cursor: pointer;
     }
-    .project-item:hover {
+    .showcase-card:hover {
       background: rgba(255,255,255,0.045);
-      transform: translateX(4px);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
-    .project-item.active {
+    .showcase-card.active {
       background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.1);
     }
 
-    .profile-tag {
-      padding: 3px 12px;
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
       border-radius: 0.5rem;
       font-size: 9px;
       font-weight: 600;
@@ -217,43 +288,55 @@
       color: #a0a0a0;
     }
 
+    .status-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6a6a6a;
+    }
+    .status-dot.online { background: #8a8a8a; }
+
+    .scroll-list {
+      max-height: 400px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #444 transparent;
+      padding-right: 4px;
+    }
+    .scroll-list::-webkit-scrollbar {
+      width: 3px;
+    }
+    .scroll-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .scroll-list::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 10px;
+    }
+
+    .profile-tag {
+      padding: 3px 12px;
+      border-radius: 0.5rem;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+      color: #a0a0a0;
+    }
+
     .made-by {
       font-size: 10px;
-      color: #555;
+      color: #444;
       text-align: center;
       padding: 12px 0 4px 0;
       letter-spacing: 0.5px;
       border-top: 1px solid rgba(255,255,255,0.03);
       margin-top: 8px;
     }
-    .made-by span { color: #888; }
-
-    .menu-dots {
-      display: flex;
-      gap: 4px;
-      cursor: default;
-      padding: 4px 8px;
-      border-radius: 0.5rem;
-    }
-    .menu-dots span {
-      display: block;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #666;
-    }
-
-    /* Scrollable list */
-    .project-list-scroll {
-      max-height: 300px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #444 transparent;
-      padding-right: 4px;
-    }
-    .project-list-scroll::-webkit-scrollbar { width: 3px; }
-    .project-list-scroll::-webkit-scrollbar-track { background: transparent; }
-    .project-list-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+    .made-by span { color: #666; }
 
     /* Responsive */
     @media (max-width: 1024px) {
@@ -261,67 +344,61 @@
         flex-direction: column;
         height: auto;
         min-height: auto;
-        gap: 16px;
       }
-      .portfolio-panel {
-        flex: none;
+      .dashboard-panel {
         width: 100%;
-        max-height: 60vh;
+        min-width: unset;
+        max-height: 500px;
       }
       .preview-panel {
-        flex: none;
-        height: 500px;
-        width: 100%;
+        min-height: 600px;
+      }
+      .editor-panel {
+        height: 100px;
       }
     }
 
-    @media (max-width: 480px) {
-      body { padding: 8px; }
-      .portfolio-panel { padding: 16px; max-height: 50vh; }
-      .preview-panel { padding: 12px; height: 350px; }
-      .project-item { padding: 10px 12px; }
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .dashboard-panel { padding: 16px; max-height: 400px; }
+      .preview-container { padding: 12px; min-height: 300px; }
+      .editor-panel { height: 80px; padding: 12px 16px; }
+      .editor-content .code-line { font-size: 10px; }
+      .preview-frame { min-height: 200px; }
     }
   </style>
 </head>
 <body>
 
 <div class="studio-container">
-
-  <!-- LEFT PANEL: Portfolio -->
-  <div class="portfolio-panel">
-
-    <!-- Status Bar -->
+  
+  <!-- LEFT: Dashboard -->
+  <div class="dashboard-panel" id="dashboardPanel">
+    
+    <!-- Status -->
     <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
-      <span class="tracking-wide">Portfolio</span>
-      <div class="menu-dots">
-        <span></span>
-        <span></span>
-        <span></span>
+      <span class="tracking-wide"><i class="fas fa-gem mr-2 text-gray-500"></i>Studio</span>
+      <div class="flex items-center gap-3">
+        <span class="text-[10px] tracking-widest opacity-60">✦✦✦</span>
+        <div class="w-8 h-8 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
+          <img src="https://i.pravatar.cc/100?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+        </div>
       </div>
     </div>
 
-    <!-- Header / Profile -->
+    <!-- Profile -->
     <div class="flex items-center gap-4 mb-4">
       <div class="w-14 h-14 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
         <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
       </div>
       <div>
-        <h1 class="text-xl font-bold text-white tracking-tight">YewsWsi</h1>
-        <p class="text-gray-400 text-xs">Creative Developer · Designer</p>
+        <h2 class="text-xl font-bold text-white tracking-tight">YewsWsi</h2>
+        <p class="text-gray-400 text-xs">Creative Developer</p>
         <div class="flex gap-1 mt-1 flex-wrap">
           <span class="profile-tag"><i class="fas fa-code mr-1"></i>Dev</span>
           <span class="profile-tag"><i class="fas fa-pen-fancy mr-1"></i>Design</span>
-          <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Create</span>
+          <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Build</span>
         </div>
-      </div>
-    </div>
-
-    <!-- Bio -->
-    <div class="glass-deep p-3 mb-4 tilt-card">
-      <div class="tilt-content">
-        <p class="text-gray-300 text-xs leading-relaxed">
-          Crafting digital experiences with <span class="text-white">interaction</span> and <span class="text-white">motion</span>.
-        </p>
       </div>
     </div>
 
@@ -329,207 +406,242 @@
     <div class="grid grid-cols-4 gap-2 mb-4">
       <div class="glass p-2 text-center tilt-card">
         <div class="tilt-content">
-          <p class="text-white text-base font-bold">48</p>
-          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Projects</p>
+          <p class="text-white text-lg font-bold" id="projectCount">5</p>
+          <p class="text-gray-400 text-[8px] uppercase tracking-wider">Projects</p>
         </div>
       </div>
       <div class="glass p-2 text-center tilt-card">
         <div class="tilt-content">
-          <p class="text-white text-base font-bold">32</p>
-          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Clients</p>
+          <p class="text-white text-lg font-bold">0</p>
+          <p class="text-gray-400 text-[8px] uppercase tracking-wider">Clients</p>
         </div>
       </div>
       <div class="glass p-2 text-center tilt-card">
         <div class="tilt-content">
-          <p class="text-white text-base font-bold">7</p>
-          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Awards</p>
+          <p class="text-white text-lg font-bold">0</p>
+          <p class="text-gray-400 text-[8px] uppercase tracking-wider">Awards</p>
         </div>
       </div>
       <div class="glass p-2 text-center tilt-card">
         <div class="tilt-content">
-          <p class="text-white text-base font-bold">5+</p>
-          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Years</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Skills -->
-    <div class="mb-4">
-      <h2 class="text-white font-bold text-xs mb-2 flex items-center gap-2">
-        <i class="fas fa-tools text-gray-400 text-[10px]"></i> Skills
-      </h2>
-      <div class="glass-deep p-3 tilt-card">
-        <div class="tilt-content flex flex-wrap gap-1.5">
-          <span class="skill-badge">Figma</span>
-          <span class="skill-badge">Framer</span>
-          <span class="skill-badge">React</span>
-          <span class="skill-badge">GSAP</span>
-          <span class="skill-badge">Tailwind</span>
-          <span class="skill-badge">Blender</span>
+          <p class="text-white text-lg font-bold">3</p>
+          <p class="text-gray-400 text-[8px] uppercase tracking-wider">Years</p>
         </div>
       </div>
     </div>
 
     <!-- Projects List -->
     <div>
-      <h2 class="text-white font-bold text-xs mb-2 flex items-center gap-2">
-        <i class="fas fa-folder text-gray-400 text-[10px]"></i> Projects
-        <span class="text-gray-500 text-[9px] font-normal ml-auto">click to preview</span>
-      </h2>
-      <div class="project-list-scroll space-y-2" id="projectList">
-        <!-- Projects injected by JS -->
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-white font-bold text-sm flex items-center gap-2">
+          <i class="fas fa-cube text-gray-400 text-xs"></i>
+          Showcases
+        </h3>
+        <span class="text-gray-500 text-[10px]"><span class="status-dot online"></span> 5</span>
+      </div>
+
+      <div class="scroll-list space-y-2" id="showcaseList">
+        <!-- Injected by JS -->
       </div>
     </div>
 
-    <!-- Made by -->
     <div class="made-by">
-      ✦ Everything made by <span>YewsWsi</span> ✦
+      ✦ Made by <span>YewsWsi</span> ✦
     </div>
   </div>
 
-  <!-- RIGHT PANEL: Preview -->
+  <!-- RIGHT: Preview + Editor -->
   <div class="preview-panel">
-    <div class="preview-header">
-      <h3 id="previewTitle"><i class="fas fa-eye mr-2 text-gray-500"></i>Select a project</h3>
-      <div class="preview-tabs">
-        <button class="preview-tab active" data-view="phone">Phone</button>
-        <button class="preview-tab" data-view="desktop">Desktop</button>
+    
+    <!-- Preview -->
+    <div class="preview-container">
+      <div class="preview-header">
+        <h3><i class="fas fa-eye mr-2 text-gray-500"></i> <span id="previewTitle">Select a project</span></h3>
+        <div class="preview-controls">
+          <button id="refreshPreview"><i class="fas fa-sync-alt"></i></button>
+          <button id="openNewTab"><i class="fas fa-external-link-alt"></i></button>
+        </div>
+      </div>
+      <div class="preview-frame" id="previewFrame">
+        <div class="preview-empty" id="emptyState">
+          <i class="fas fa-cube"></i>
+          <p>Click a project to preview</p>
+        </div>
+        <iframe id="previewIframe" src="" style="display:none;"></iframe>
       </div>
     </div>
-    <div class="preview-frame" id="previewFrame">
-      <iframe id="previewIframe" src="" loading="lazy"></iframe>
+
+    <!-- Editor -->
+    <div class="editor-panel">
+      <div class="editor-header">
+        <span><i class="fas fa-code mr-1"></i> EDITOR</span>
+        <span id="fileInfo">showcase-v1.html</span>
+      </div>
+      <div class="editor-content">
+        <div class="code-line" id="codeDisplay">
+          <span class="hl">&lt;</span><span class="str">!DOCTYPE</span> <span class="hl">html&gt;</span>
+          <span class="hl">&lt;</span><span class="str">html</span> <span class="hl">lang=</span><span class="str">"en"</span><span class="hl">&gt;</span>
+          <span class="hl">&lt;</span><span class="str">head</span><span class="hl">&gt;</span>...
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
 
 <script>
-  window.addEventListener('load', function() {
+  (function() {
+    'use strict';
 
-    // ===== PROJECT DATA =====
-    const projects = [
+    // ===== SHOWCASE DATA =====
+    const showcases = [
       {
         id: 'v1',
         title: 'Showcase V1',
         subtitle: 'Fitness · Tilt + Tabs',
         file: 'showcases/showcase-v1.html',
-        icon: 'fa-dumbbell'
+        icon: 'fa-dumbbell',
+        color: '#a0a0a0'
       },
       {
         id: 'v2',
         title: 'Showcase V2',
         subtitle: 'Portfolio · Glass',
         file: 'showcases/showcase-v2.html',
-        icon: 'fa-user-astronaut'
+        icon: 'fa-user-astronaut',
+        color: '#b0b0b0'
       },
       {
         id: 'v3',
         title: 'Showcase V3',
         subtitle: 'Studio · Services',
         file: 'showcases/showcase-v3.html',
-        icon: 'fa-palette'
+        icon: 'fa-palette',
+        color: '#c0c0c0'
       },
       {
         id: 'v4',
         title: 'Showcase V4',
         subtitle: 'Agency · Portfolio',
         file: 'showcases/showcase-v4.html',
-        icon: 'fa-building'
+        icon: 'fa-building',
+        color: '#b8b8b8'
       },
       {
         id: 'v5',
         title: 'Showcase V5',
         subtitle: 'Analytics · Products',
         file: 'showcases/showcase-v5.html',
-        icon: 'fa-chart-simple'
+        icon: 'fa-chart-simple',
+        color: '#a8a8a8'
       }
     ];
 
     // ===== DOM ELEMENTS =====
-    const projectList = document.getElementById('projectList');
+    const listEl = document.getElementById('showcaseList');
     const previewIframe = document.getElementById('previewIframe');
+    const emptyState = document.getElementById('emptyState');
     const previewTitle = document.getElementById('previewTitle');
-    const viewTabs = document.querySelectorAll('.preview-tab');
-    let currentProject = null;
+    const fileInfo = document.getElementById('fileInfo');
+    const codeDisplay = document.getElementById('codeDisplay');
+    const refreshBtn = document.getElementById('refreshPreview');
+    const openTabBtn = document.getElementById('openNewTab');
 
-    // ===== RENDER PROJECT LIST =====
-    function renderProjects() {
-      projectList.innerHTML = '';
-      projects.forEach((project, index) => {
-        const item = document.createElement('div');
-        item.className = 'project-item tilt-card';
-        item.dataset.index = index;
-        item.innerHTML = `
-          <div class="tilt-content flex items-center gap-3">
-            <div class="w-8 h-8 bg-white/5 rounded-custom flex items-center justify-center no-tilt flex-shrink-0">
-              <i class="fas ${project.icon} text-gray-400 text-sm"></i>
+    let currentFile = '';
+
+    // ===== RENDER CARDS =====
+    function renderCards() {
+      listEl.innerHTML = '';
+      
+      showcases.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'showcase-card tilt-card flex items-center gap-3';
+        card.dataset.file = item.file;
+        card.dataset.title = item.title;
+        card.dataset.subtitle = item.subtitle;
+
+        card.innerHTML = `
+          <div class="tilt-content flex items-center gap-3 w-full">
+            <div class="preview-icon no-tilt" style="width:36px;height:36px;background:rgba(255,255,255,0.04);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;">
+              <i class="fas ${item.icon} text-gray-500 text-sm"></i>
             </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-white text-sm font-medium truncate">${project.title}</p>
-              <p class="text-gray-400 text-[10px] truncate">${project.subtitle}</p>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <p class="text-white font-medium text-sm">${item.title}</p>
+                <span class="badge">${item.id}</span>
+              </div>
+              <p class="text-gray-400 text-xs">${item.subtitle}</p>
             </div>
-            <i class="fas fa-chevron-right text-gray-500 text-[10px] no-tilt"></i>
+            <i class="fas fa-chevron-right text-gray-600 text-xs no-tilt"></i>
           </div>
         `;
 
-        item.addEventListener('click', function() {
-          const idx = parseInt(this.dataset.index);
-          loadProject(idx);
+        card.addEventListener('click', function() {
+          const file = this.dataset.file;
+          const title = this.dataset.title;
+          const subtitle = this.dataset.subtitle;
+          openPreview(file, title, subtitle);
+          
           // Highlight active
-          document.querySelectorAll('.project-item').forEach(el => el.classList.remove('active'));
+          document.querySelectorAll('.showcase-card').forEach(c => c.classList.remove('active'));
           this.classList.add('active');
         });
 
-        projectList.appendChild(item);
+        listEl.appendChild(card);
       });
+    }
 
-      // Auto-load first project
-      if (projects.length > 0) {
-        setTimeout(() => {
-          const firstItem = projectList.querySelector('.project-item');
-          if (firstItem) {
-            firstItem.classList.add('active');
-            loadProject(0);
-          }
-        }, 300);
+    // ===== OPEN PREVIEW =====
+    function openPreview(file, title, subtitle) {
+      currentFile = file;
+      previewTitle.textContent = title || 'Preview';
+      fileInfo.textContent = file.split('/').pop() || 'showcase.html';
+      
+      // Show iframe, hide empty state
+      previewIframe.style.display = 'block';
+      emptyState.style.display = 'none';
+      
+      // Load the file
+      previewIframe.src = file;
+      
+      // Update code display
+      updateCodeDisplay(file);
+    }
+
+    // ===== UPDATE CODE DISPLAY =====
+    function updateCodeDisplay(file) {
+      const fileName = file.split('/').pop() || 'showcase.html';
+      codeDisplay.innerHTML = `
+        <span class="hl">&lt;</span><span class="str">!DOCTYPE</span> <span class="hl">html&gt;</span>
+        <span class="hl">&lt;</span><span class="str">html</span> <span class="hl">lang=</span><span class="str">"en"</span><span class="hl">&gt;</span>
+        <span class="hl">&lt;</span><span class="str">head</span><span class="hl">&gt;</span>
+        <span class="hl">  &lt;</span><span class="str">title</span><span class="hl">&gt;</span>${fileName.replace('.html', '')}<span class="hl">&lt;/</span><span class="str">title</span><span class="hl">&gt;</span>
+        <span class="hl">  &lt;</span><span class="str">script</span> <span class="hl">src=</span><span class="str">"..."</span><span class="hl">&gt;&lt;/</span><span class="str">script</span><span class="hl">&gt;</span>
+        <span class="hl">&lt;/</span><span class="str">head</span><span class="hl">&gt;</span>
+        <span class="hl">&lt;</span><span class="str">body</span><span class="hl">&gt;</span>
+        <span class="hl">  &lt;</span><span class="str">div</span> <span class="hl">class=</span><span class="str">"phone-glass"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/</span><span class="str">div</span><span class="hl">&gt;</span>
+        <span class="hl">&lt;/</span><span class="str">body</span><span class="hl">&gt;</span>
+        <span class="hl">&lt;/</span><span class="str">html</span><span class="hl">&gt;</span>
+      `;
+    }
+
+    // ===== REFRESH =====
+    refreshBtn.addEventListener('click', function() {
+      if (currentFile) {
+        previewIframe.src = currentFile;
       }
+    });
 
-      // Re-init tilt
-      setTimeout(initTilt, 50);
-    }
-
-    // ===== LOAD PROJECT IN PREVIEW =====
-    function loadProject(index) {
-      const project = projects[index];
-      if (!project) return;
-      currentProject = project;
-      previewTitle.innerHTML = `<i class="fas fa-eye mr-2 text-gray-500"></i>${project.title}`;
-      previewIframe.src = project.file;
-    }
-
-    // ===== VIEW TOGGLES =====
-    viewTabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        viewTabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        const view = this.dataset.view;
-        const frame = document.getElementById('previewFrame');
-        if (view === 'phone') {
-          frame.style.maxWidth = '380px';
-          frame.style.margin = '0 auto';
-          frame.style.width = '100%';
-        } else {
-          frame.style.maxWidth = '100%';
-          frame.style.margin = '0';
-          frame.style.width = '100%';
-        }
-      });
+    // ===== OPEN IN NEW TAB =====
+    openTabBtn.addEventListener('click', function() {
+      if (currentFile) {
+        window.open(currentFile, '_blank');
+      }
     });
 
     // ===== TILT EFFECT =====
     function initTilt() {
       const tiltCards = document.querySelectorAll('.tilt-card');
-      const MAX_TILT = 4.5;
+      const MAX_TILT = 3.5;
 
       tiltCards.forEach(card => {
         if (card._tiltAttached) return;
@@ -543,10 +655,6 @@
         card.addEventListener('mouseleave', () => {
           isHovering = false;
           targetRotX = 0; targetRotY = 0;
-          gsap.to(card, {
-            boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
-            duration: 0.3, ease: "power2.out"
-          });
         });
 
         card.addEventListener('mousemove', (e) => {
@@ -554,15 +662,8 @@
           const rect = card.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width;
           const y = (e.clientY - rect.top) / rect.height;
-          const rotY = (x - 0.5) * 2 * MAX_TILT;
-          const rotX = (y - 0.5) * 2 * MAX_TILT;
-          targetRotX = rotX; targetRotY = rotY;
-          const shadowX = (x - 0.5) * 8;
-          const shadowY = (y - 0.5) * 8;
-          gsap.to(card, {
-            boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
-            duration: 0.15, ease: "power1.out"
-          });
+          targetRotY = (x - 0.5) * 2 * MAX_TILT;
+          targetRotX = (y - 0.5) * 2 * MAX_TILT;
         });
 
         function animateTilt() {
@@ -576,7 +677,7 @@
           gsap.set(card, {
             rotateX: currentRotX,
             rotateY: currentRotY,
-            transformPerspective: 800,
+            transformPerspective: 600,
             duration: 0.01,
             overwrite: 'auto'
           });
@@ -586,22 +687,21 @@
       });
     }
 
-    // ===== ENTRANCE ANIMATIONS =====
+    // ===== ENTRANCE =====
     function entranceAnim() {
-      gsap.from('.portfolio-panel', { opacity: 0, x: -20, duration: 0.6, ease: "power2.out" });
-      gsap.from('.preview-panel', { opacity: 0, x: 20, duration: 0.6, ease: "power2.out", delay: 0.2 });
-      gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.6, delay: 0.3, ease: "back.out(1.4)" });
+      const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
+      tl.from(".studio-container", { opacity: 0, y: 20, scale: 0.98, duration: 0.7 })
+        .from(".dashboard-panel, .preview-panel", { opacity: 0, y: 12, stagger: 0.1, duration: 0.5 }, "-=0.3");
+
+      gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.7, delay: 0.3, ease: "back.out(1.4)" });
     }
 
     // ===== INIT =====
-    renderProjects();
+    renderCards();
     entranceAnim();
     setTimeout(initTilt, 200);
 
-    // Set default view to phone
-    document.querySelector('.preview-tab.active')?.click();
-
-  });
+  })();
 </script>
 
 </body>
