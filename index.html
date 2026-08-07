@@ -14,35 +14,32 @@
 <div class="phone-glass" id="app">
 
   <!-- Made By Badge -->
-  <div class="text-center mb-3">
-    <span class="text-[10px] text-gray-500 tracking-widest bg-white/5 px-4 py-1 rounded-full inline-block">
-      <i class="fas fa-crown text-[8px] mr-1"></i> Made by: !YewsWsi
+  <div class="flex justify-center mb-4">
+    <span class="text-[9px] text-gray-500 tracking-widest bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+      <i class="fas fa-crown text-[8px] mr-1.5 text-gray-400"></i> Made by: !YewsWsi
     </span>
   </div>
 
   <!-- Profile Section -->
-  <div class="flex items-center gap-4 mb-5">
-    <!-- Profile Icon - No Human Photo -->
-    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-700 to-gray-600 border-2 border-gray-500 flex items-center justify-center avatar-icon flex-shrink-0">
-      <i class="fas fa-code text-2xl text-gray-300"></i>
+  <div class="glass-deep p-5 mb-4 tilt-card">
+    <div class="tilt-content flex items-center gap-4">
+      <!-- Profile Icon - No Human Photo -->
+      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-700 to-gray-600 border border-gray-500 flex items-center justify-center avatar-icon flex-shrink-0">
+        <i class="fas fa-code text-2xl text-gray-300"></i>
+      </div>
+      
+      <div class="flex-1">
+        <h1 class="text-2xl font-bold text-white tracking-tight">YewsWsi</h1>
+        <p class="text-gray-400 text-sm">Creative Developer</p>
+        <!-- Tags inline -->
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          <span class="tag">Dev</span>
+          <span class="tag">Scripter</span>
+          <span class="tag">Designer</span>
+          <span class="tag">Creator</span>
+        </div>
+      </div>
     </div>
-    
-    <div>
-      <h1 class="text-2xl font-bold text-white tracking-tight">YewsWsi</h1>
-      <p class="text-gray-400 text-sm flex items-center gap-2">
-        <i class="fas fa-map-pin text-[10px] text-gray-500"></i>
-        Creative Developer
-      </p>
-    </div>
-  </div>
-
-  <!-- Tags -->
-  <div class="flex flex-wrap gap-2 mb-5">
-    <span class="tag"><i class="fas fa-code text-[10px] mr-1"></i> Dev</span>
-    <span class="tag"><i class="fas fa-terminal text-[10px] mr-1"></i> Scripter</span>
-    <span class="tag"><i class="fas fa-pen-fancy text-[10px] mr-1"></i> Designer</span>
-    <span class="tag"><i class="fas fa-cube text-[10px] mr-1"></i> Creator</span>
-    <span class="tag"><i class="fas fa-rocket text-[10px] mr-1"></i> Innovator</span>
   </div>
 
   <!-- Projects Header -->
@@ -51,11 +48,11 @@
       <i class="fas fa-folder-open text-gray-400 text-xs"></i>
       Projects
     </h2>
-    <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">5 total</span>
+    <span class="text-[10px] text-gray-500 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/5">5 total</span>
   </div>
 
-  <!-- Tabs / Filters -->
-  <div class="flex flex-wrap gap-1 mb-4">
+  <!-- Filter Tabs -->
+  <div class="flex flex-wrap gap-1.5 mb-4">
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="fitness">Fitness</button>
     <button class="filter-btn" data-filter="portfolio">Portfolio</button>
@@ -65,21 +62,21 @@
   </div>
 
   <!-- Project List -->
-  <div class="scroll-list space-y-3" id="showcaseList">
+  <div class="scroll-list space-y-3 mb-4" id="showcaseList">
     <!-- Cards injected by JavaScript -->
   </div>
 
   <!-- Footer -->
-  <div class="glass-deep p-4 mt-4 tilt-card">
+  <div class="glass-deep p-4 tilt-card">
     <div class="tilt-content flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <i class="fas fa-gem text-xl text-gray-500 no-tilt"></i>
+        <i class="fas fa-gem text-lg text-gray-500 no-tilt"></i>
         <div>
           <p class="text-white font-medium text-sm">Showcase Collection</p>
-          <p class="text-gray-400 text-xs">Interactive glass gallery</p>
+          <p class="text-gray-400 text-xs">5 interactive glass projects</p>
         </div>
       </div>
-      <div class="flex gap-2">
+      <div class="flex gap-1.5">
         <span class="badge">glass</span>
         <span class="badge">tilt</span>
         <span class="badge">gsap</span>
