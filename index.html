@@ -106,16 +106,58 @@
     .project-img {
       background: linear-gradient(145deg, #1a1a1c, #0e0e0f);
       border-radius: 0.5rem;
-      height: 100px;
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 1px solid rgba(255,255,255,0.04);
+      margin-bottom: 10px;
+    }
+
+    /* Showcase card */
+    .showcase-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 0.5rem;
+      padding: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .showcase-card:hover {
+      background: rgba(255,255,255,0.045);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+    }
+
+    .showcase-card .preview-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 6px 16px;
+      border-radius: 0.5rem;
+      color: #f0f0f0;
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .showcase-card .preview-btn:hover {
+      background: rgba(255,255,255,0.12);
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+    }
+    .showcase-card .preview-btn i {
+      transition: transform 0.3s ease;
+    }
+    .showcase-card .preview-btn:hover i {
+      transform: translateX(3px);
     }
 
     /* Scrollable project list */
     .project-list {
-      max-height: 240px;
+      max-height: 400px;
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: #444 transparent;
@@ -297,6 +339,11 @@
       background: #999;
     }
 
+    .showcase-icon {
+      font-size: 28px;
+      color: #666;
+    }
+
     @media (max-width: 480px) {
       .phone-glass {
         padding: 16px;
@@ -306,6 +353,15 @@
       }
       .modal-content iframe {
         height: 350px;
+      }
+      .showcase-card {
+        padding: 12px;
+      }
+      .project-img {
+        height: 60px;
+      }
+      .showcase-icon {
+        font-size: 22px;
       }
     }
   </style>
@@ -412,7 +468,7 @@
       <div class="tilt-content">
         <!-- All Showcases -->
         <div class="tab-content active" id="tab-all">
-          <div class="space-y-3" id="showcaseList">
+          <div class="project-list space-y-3" id="showcaseList">
             <!-- Injected by JavaScript -->
           </div>
         </div>
@@ -420,17 +476,19 @@
         <!-- V1 -->
         <div class="tab-content" id="tab-v1">
           <div class="space-y-3">
-            <div class="project-img mb-2">
-              <i class="fas fa-dumbbell text-3xl text-gray-600"></i>
-            </div>
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-white font-medium text-sm">Showcase V1</p>
-                <p class="text-gray-400 text-xs">Fitness · Tilt + Tabs</p>
+            <div class="showcase-card" onclick="openModal('showcases/showcase-v1.html', 'Showcase V1', 'Fitness · Tilt + Tabs')">
+              <div class="project-img">
+                <i class="fas fa-dumbbell showcase-icon"></i>
               </div>
-              <button class="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-custom hover:bg-white/10 transition" onclick="openModal('showcases/showcase-v1.html', 'Showcase V1', 'Fitness · Tilt + Tabs')">
-                Preview →
-              </button>
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-white font-medium text-sm">Showcase V1</p>
+                  <p class="text-gray-400 text-xs">Fitness · Tilt + Tabs</p>
+                </div>
+                <button class="preview-btn no-tilt" onclick="event.stopPropagation(); openModal('showcases/showcase-v1.html', 'Showcase V1', 'Fitness · Tilt + Tabs')">
+                  <i class="fas fa-eye"></i> Preview
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -438,17 +496,19 @@
         <!-- V2 -->
         <div class="tab-content" id="tab-v2">
           <div class="space-y-3">
-            <div class="project-img mb-2">
-              <i class="fas fa-user-astronaut text-3xl text-gray-600"></i>
-            </div>
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-white font-medium text-sm">Showcase V2</p>
-                <p class="text-gray-400 text-xs">Portfolio · Glass</p>
+            <div class="showcase-card" onclick="openModal('showcases/showcase-v2.html', 'Showcase V2', 'Portfolio · Glass')">
+              <div class="project-img">
+                <i class="fas fa-user-astronaut showcase-icon"></i>
               </div>
-              <button class="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-custom hover:bg-white/10 transition" onclick="openModal('showcases/showcase-v2.html', 'Showcase V2', 'Portfolio · Glass')">
-                Preview →
-              </button>
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-white font-medium text-sm">Showcase V2</p>
+                  <p class="text-gray-400 text-xs">Portfolio · Glass</p>
+                </div>
+                <button class="preview-btn no-tilt" onclick="event.stopPropagation(); openModal('showcases/showcase-v2.html', 'Showcase V2', 'Portfolio · Glass')">
+                  <i class="fas fa-eye"></i> Preview
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -525,35 +585,40 @@
       title: 'Showcase V1',
       subtitle: 'Fitness · Tilt + Tabs',
       file: 'showcases/showcase-v1.html',
-      icon: 'fa-dumbbell'
+      icon: 'fa-dumbbell',
+      color: '#a0a0a0'
     },
     {
       id: 'v2',
       title: 'Showcase V2',
       subtitle: 'Portfolio · Glass',
       file: 'showcases/showcase-v2.html',
-      icon: 'fa-user-astronaut'
+      icon: 'fa-user-astronaut',
+      color: '#b0b0b0'
     },
     {
       id: 'v3',
       title: 'Showcase V3',
       subtitle: 'Studio · Services',
       file: 'showcases/showcase-v3.html',
-      icon: 'fa-palette'
+      icon: 'fa-palette',
+      color: '#c0c0c0'
     },
     {
       id: 'v4',
       title: 'Showcase V4',
       subtitle: 'Agency · Portfolio',
       file: 'showcases/showcase-v4.html',
-      icon: 'fa-building'
+      icon: 'fa-building',
+      color: '#b8b8b8'
     },
     {
       id: 'v5',
       title: 'Showcase V5',
       subtitle: 'Analytics · Products',
       file: 'showcases/showcase-v5.html',
-      icon: 'fa-chart-simple'
+      icon: 'fa-chart-simple',
+      color: '#a8a8a8'
     }
   ];
 
@@ -571,30 +636,25 @@
     
     showcases.forEach((item) => {
       const card = document.createElement('div');
-      card.className = 'tilt-card';
-      card.style.cssText = 'background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 0.5rem; padding: 12px 16px; transition: all 0.2s; cursor: pointer;';
-      card.onmouseenter = function() { this.style.background = 'rgba(255,255,255,0.04)'; };
-      card.onmouseleave = function() { this.style.background = 'rgba(255,255,255,0.02)'; };
-
+      card.className = 'showcase-card';
+      
       card.innerHTML = `
-        <div class="tilt-content flex items-center justify-between w-full">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
-              <i class="fas ${item.icon} text-gray-400 text-lg"></i>
-            </div>
-            <div>
-              <p class="text-white font-medium text-sm">${item.title}</p>
-              <p class="text-gray-400 text-xs">${item.subtitle}</p>
-            </div>
+        <div class="project-img">
+          <i class="fas ${item.icon} showcase-icon"></i>
+        </div>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-white font-medium text-sm">${item.title}</p>
+            <p class="text-gray-400 text-xs">${item.subtitle}</p>
           </div>
-          <button class="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-custom hover:bg-white/10 transition no-tilt" onclick="event.stopPropagation(); openModal('${item.file}', '${item.title}', '${item.subtitle}')">
-            Preview →
+          <button class="preview-btn no-tilt" onclick="event.stopPropagation(); openModal('${item.file}', '${item.title}', '${item.subtitle}')">
+            <i class="fas fa-eye"></i> Preview
           </button>
         </div>
       `;
 
       card.addEventListener('click', function() {
-        const file = this.querySelector('button').getAttribute('onclick').match(/'([^']+)'/g)[0].replace(/'/g, '');
+        const file = this.querySelector('.preview-btn').getAttribute('onclick').match(/'([^']+)'/g)[0].replace(/'/g, '');
         const title = this.querySelector('.text-white').textContent;
         const sub = this.querySelector('.text-gray-400').textContent;
         openModal(file, title, sub);
