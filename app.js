@@ -1,54 +1,54 @@
-// app.js - YewsWsi Premium Portfolio
+// app.js - Developer Portfolio Showcase
 
 (function() {
   'use strict';
 
-  // ===== PROJECT DATA =====
-  const projects = [
+  // ===== SHOWCASE DATA =====
+  const showcases = [
     {
       id: 'v1',
-      title: 'Fitness Dashboard',
-      subtitle: 'Tilt + Tabs · Interactive Glass',
-      category: 'fitness',
+      title: 'Fitness Tracker',
+      subtitle: 'Glass · Tilt + Tabs',
       file: 'showcases/showcase-v1.html',
       icon: 'fa-dumbbell',
-      color: '#a0a0a0'
+      color: '#a0a0a0',
+      category: 'ui-ux'
     },
     {
       id: 'v2',
-      title: 'Portfolio Showcase',
-      subtitle: 'Glass · Monochrome · Tilt',
-      category: 'portfolio',
+      title: 'Portfolio V2',
+      subtitle: 'Glass · Portfolio',
       file: 'showcases/showcase-v2.html',
       icon: 'fa-user-astronaut',
-      color: '#b0b0b0'
+      color: '#b0b0b0',
+      category: 'web'
     },
     {
       id: 'v3',
-      title: 'Studio Services',
-      subtitle: 'Brand · Digital · Motion',
-      category: 'studio',
+      title: 'Creative Studio',
+      subtitle: 'Glass · Services',
       file: 'showcases/showcase-v3.html',
       icon: 'fa-palette',
-      color: '#c0c0c0'
+      color: '#c0c0c0',
+      category: 'ui-ux'
     },
     {
       id: 'v4',
       title: 'Agency Portfolio',
-      subtitle: 'Team · Projects · Awards',
-      category: 'agency',
+      subtitle: 'Glass · Agency',
       file: 'showcases/showcase-v4.html',
       icon: 'fa-building',
-      color: '#b8b8b8'
+      color: '#b8b8b8',
+      category: 'web'
     },
     {
       id: 'v5',
-      title: 'Analytics Showcase',
-      subtitle: 'Products · Graphs · Stats',
-      category: 'analytics',
+      title: 'Analytics Dashboard',
+      subtitle: 'Glass · Analytics',
       file: 'showcases/showcase-v5.html',
       icon: 'fa-chart-simple',
-      color: '#a8a8a8'
+      color: '#a8a8a8',
+      category: 'data'
     }
   ];
 
@@ -59,63 +59,110 @@
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
   const modalSub = document.getElementById('modalSub');
-  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  const viewAllBtn = document.getElementById('viewAllBtn');
+
+  // ===== TAB SYSTEM =====
+  function activateTab(tabId) {
+    // Update buttons
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.tab === tabId) {
+        btn.classList.add('active');
+      }
+    });
+
+    // Update content
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+      if (content.id === `tab-${tabId}`) {
+        content.classList.add('active');
+      }
+    });
+
+    // Filter showcases
+    filterShowcases(tabId);
+  }
+
+  // ===== FILTER SHOWCASES =====
+  function filterShowcases(category) {
+    const cards = document.querySelectorAll('.showcase-card');
+    
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = 'flex';
+        // Re-animate visible cards
+        gsap.from(card, {
+          opacity: 0,
+          y: 10,
+          duration: 0.4,
+          delay: 0.05,
+          ease: "power2.out"
+        });
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
 
   // ===== RENDER CARDS =====
-  function renderCards(category = 'all') {
-    const filtered = category === 'all' 
-      ? projects 
-      : projects.filter(p => p.category === category);
-    
+  function renderCards() {
     listEl.innerHTML = '';
-
-    filtered.forEach((item) => {
+    
+    showcases.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'showcase-card tilt-card';
+      card.dataset.index = index;
       card.dataset.file = item.file;
+      card.dataset.category = item.category;
 
       card.innerHTML = `
-        <div class="tilt-content card-content">
-          <div class="card-icon no-tilt">
-            <i class="fas ${item.icon}"></i>
-          </div>
-          <div class="card-info">
-            <div class="card-title">
-              <h4>${item.title}</h4>
-              <span class="badge">${item.id}</span>
+        <div class="tilt-content">
+          <div class="flex items-start gap-4">
+            <div class="preview-icon no-tilt">
+              <i class="fas ${item.icon} text-gray-400 text-xl"></i>
             </div>
-            <p class="card-subtitle">${item.subtitle}</p>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <p class="text-white font-medium text-base truncate">${item.title}</p>
+                  <p class="text-gray-400 text-xs">${item.subtitle}</p>
+                </div>
+                <span class="badge flex-shrink-0">${item.id}</span>
+              </div>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="text-gray-500 text-[10px] flex items-center gap-1">
+                  <i class="fas fa-code text-[8px]"></i> ${item.category.replace('-', ' ')}
+                </span>
+                <span class="text-gray-500 text-[10px] flex items-center gap-1">
+                  <i class="fas fa-calendar text-[8px]"></i> 2025
+                </span>
+              </div>
+            </div>
           </div>
-          <i class="fas fa-chevron-right card-arrow"></i>
         </div>
       `;
 
-      card.addEventListener('click', function() {
+      // Click to open modal
+      card.addEventListener('click', function(e) {
         const file = this.dataset.file;
-        const title = this.querySelector('.card-title h4')?.textContent || 'Project';
-        const sub = this.querySelector('.card-subtitle')?.textContent || '';
+        const title = this.querySelector('.text-white')?.textContent || 'Showcase';
+        const sub = this.querySelector('.text-gray-400')?.textContent || '';
         openModal(file, title, sub);
       });
 
       listEl.appendChild(card);
     });
 
+    // Re-init tilt for new cards
     setTimeout(initTilt, 50);
   }
 
-  // ===== TABS =====
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      renderCards(this.dataset.tab);
-    });
-  });
-
-  // ===== MODAL =====
+  // ===== MODAL CONTROLS =====
   function openModal(file, title, sub) {
-    modalTitle.textContent = title;
-    modalSub.textContent = sub;
+    modalTitle.textContent = title || 'Showcase';
+    modalSub.textContent = sub || 'preview';
     modalIframe.src = file;
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -124,20 +171,29 @@
   function closeModal() {
     modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
+    // Clear iframe src to stop loading
+    setTimeout(() => {
+      if (!modalOverlay.classList.contains('active')) {
+        // Keep the src to avoid reload flicker
+      }
+    }, 300);
   }
 
+  // Modal event listeners
   modalClose.addEventListener('click', closeModal);
+  
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
+  
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
 
-  // ===== TILT =====
+  // ===== TILT EFFECT =====
   function initTilt() {
     const tiltCards = document.querySelectorAll('.tilt-card');
-    const MAX_TILT = 4.5;
+    const MAX_TILT = 3.5;
 
     tiltCards.forEach(card => {
       if (card._tiltAttached) return;
@@ -147,13 +203,16 @@
       let targetRotX = 0, targetRotY = 0;
       let isHovering = false;
 
-      card.addEventListener('mouseenter', () => { isHovering = true; });
+      card.addEventListener('mouseenter', () => {
+        isHovering = true;
+      });
+
       card.addEventListener('mouseleave', () => {
         isHovering = false;
         targetRotX = 0;
         targetRotY = 0;
         gsap.to(card, {
-          boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
+          boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
           duration: 0.3,
           ease: "power2.out"
         });
@@ -169,10 +228,10 @@
         targetRotX = rotX;
         targetRotY = rotY;
 
-        const shadowX = (x - 0.5) * 8;
-        const shadowY = (y - 0.5) * 8;
+        const shadowX = (x - 0.5) * 6;
+        const shadowY = (y - 0.5) * 6;
         gsap.to(card, {
-          boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
+          boxShadow: `${shadowX}px ${shadowY}px 25px rgba(0,0,0,0.4)`,
           duration: 0.15,
           ease: "power1.out"
         });
@@ -202,39 +261,88 @@
     });
   }
 
-  // ===== ANIMATIONS =====
+  // ===== STATS COUNTER ANIMATION =====
+  function animateCounters() {
+    const counters = document.querySelectorAll('.stat-value');
+    
+    counters.forEach(counter => {
+      const target = parseInt(counter.dataset.target);
+      const duration = 1500;
+      const startTime = performance.now();
+      
+      function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+        
+        counter.textContent = current.toLocaleString();
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = target.toLocaleString();
+        }
+      }
+      
+      requestAnimationFrame(updateCounter);
+    });
+  }
+
+  // ===== ENTRANCE ANIMATIONS =====
   function entranceAnim() {
     const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
     
-    tl.from(".phone-glass", { opacity: 0, y: 30, scale: 0.95, duration: 0.7 })
-      .from(".hero-section", { opacity: 0, y: 20, duration: 0.6 }, "-=0.3")
-      .from(".hero-tag", { opacity: 0, scale: 0.8, stagger: 0.08, duration: 0.4 }, "-=0.2")
-      .from(".stats-row .stat-card", { opacity: 0, y: 15, stagger: 0.08, duration: 0.5 }, "-=0.2")
-      .from(".tabs-container .tab-btn", { opacity: 0, y: 10, stagger: 0.05, duration: 0.4 }, "-=0.2");
+    tl.from(".app-container", { 
+      opacity: 0, 
+      duration: 0.5 
+    })
+    .from(".hero-section", { 
+      opacity: 0, 
+      y: 20, 
+      duration: 0.6 
+    }, "-=0.2")
+    .from(".stats-grid", { 
+      opacity: 0, 
+      y: 15, 
+      duration: 0.5 
+    }, "-=0.3")
+    .from(".tabs-container", { 
+      opacity: 0, 
+      y: 15, 
+      duration: 0.5 
+    }, "-=0.2")
+    .from(".showcase-card", { 
+      opacity: 0, 
+      y: 20, 
+      stagger: 0.08, 
+      duration: 0.5 
+    }, "-=0.2");
 
-    anime({
-      targets: '.showcase-card',
-      translateY: [10, 0],
-      opacity: [0, 1],
-      duration: 600,
-      easing: 'easeOutQuad',
-      delay: anime.stagger(60, { start: 400 })
+    // Animate stats after they appear
+    setTimeout(animateCounters, 800);
+  }
+
+  // ===== TAB EVENT LISTENERS =====
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tabId = this.dataset.tab;
+      activateTab(tabId);
     });
+  });
 
-    document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
-      gsap.from(el, { 
-        opacity: 0, 
-        y: 12, 
-        duration: 0.5, 
-        delay: 0.1 + i * 0.05, 
-        ease: "power2.out" 
-      });
+  // ===== VIEW ALL BUTTON =====
+  if (viewAllBtn) {
+    viewAllBtn.addEventListener('click', function() {
+      activateTab('all');
     });
   }
 
   // ===== INIT =====
-  renderCards('all');
+  renderCards();
   entranceAnim();
-  setTimeout(initTilt, 200);
+  
+  // Additional tilt init after animations
+  setTimeout(initTilt, 300);
 
 })();
