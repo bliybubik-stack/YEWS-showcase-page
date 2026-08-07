@@ -61,13 +61,15 @@
       overflow: hidden;
       border: 2px solid rgba(255,255,255,0.08);
       flex-shrink: 0;
+      background: linear-gradient(135deg, #1a1a1c, #0e0e0f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    .profile-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(1);
+    .profile-avatar i {
+      font-size: 36px;
+      color: #666;
     }
     
     .profile-info h2 {
@@ -106,18 +108,6 @@
       color: #fff;
     }
     
-    .made-by {
-      font-size: 11px;
-      color: #666;
-      text-align: center;
-      padding: 12px 0 4px 0;
-      letter-spacing: 0.5px;
-    }
-    
-    .made-by span {
-      color: #888;
-    }
-    
     .showcase-card {
       padding: 16px 20px;
     }
@@ -128,6 +118,122 @@
       gap: 16px;
       width: 100%;
     }
+    
+    /* Notes Grid */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .note-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 0.75rem;
+      padding: 14px 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .note-card:hover {
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-2px);
+    }
+    
+    .note-card .note-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b0b0b0;
+      margin-bottom: 4px;
+    }
+    
+    .note-card .note-content {
+      font-size: 13px;
+      color: #d0d0d0;
+      line-height: 1.5;
+    }
+    
+    .note-card .note-meta {
+      font-size: 10px;
+      color: #666;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Quick Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    
+    .stat-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 0.75rem;
+      padding: 12px;
+      text-align: center;
+    }
+    
+    .stat-box .stat-number {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f0f0f0;
+    }
+    
+    .stat-box .stat-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-top: 2px;
+    }
+    
+    .made-by {
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      padding: 16px 0 4px 0;
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(255,255,255,0.03);
+      margin-top: 8px;
+    }
+    
+    .made-by span {
+      color: #888;
+    }
+    
+    .made-by i {
+      color: #666;
+      margin: 0 4px;
+    }
+    
+    /* Top bar with dots */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .top-dots {
+      display: flex;
+      gap: 6px;
+    }
+    
+    .top-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #444;
+    }
+    
+    .top-dot:nth-child(1) { background: #555; }
+    .top-dot:nth-child(2) { background: #444; }
+    .top-dot:nth-child(3) { background: #333; }
     
     @media (max-width: 480px) {
       .profile-section {
@@ -154,6 +260,14 @@
       .showcase-card {
         padding: 12px 16px;
       }
+      
+      .notes-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
@@ -161,13 +275,20 @@
 
 <div class="phone-glass" id="app">
 
-  <!-- Status Bar -->
-  <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
-    <span class="tracking-wide"><i class="fas fa-gem mr-2 text-gray-500"></i>Dashboard</span>
-    <div class="flex items-center gap-3">
-      <span class="text-[10px] tracking-widest opacity-60">✦✦✦✦✦</span>
-      <div class="w-8 h-8 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
-        <img src="https://i.pravatar.cc/100?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+  <!-- Top Bar with Dots -->
+  <div class="top-bar">
+    <div class="top-dots">
+      <span class="top-dot"></span>
+      <span class="top-dot"></span>
+      <span class="top-dot"></span>
+    </div>
+    <div class="text-gray-400 text-sm font-semibold">
+      <i class="fas fa-circle text-[6px] text-gray-500 mr-2"></i>
+      YewsWsi
+    </div>
+    <div class="w-8 h-8 bg-gray-700 border border-gray-600 avatar overflow-hidden flex-shrink-0 rounded-full">
+      <div class="w-full h-full flex items-center justify-center text-gray-400">
+        <i class="fas fa-user text-sm"></i>
       </div>
     </div>
   </div>
@@ -176,15 +297,16 @@
   <div class="nav-tabs">
     <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
     <button class="nav-tab" data-tab="projects">Projects</button>
-    <button class="nav-tab" data-tab="about">About</button>
+    <button class="nav-tab" data-tab="notes">Notes</button>
   </div>
 
   <!-- Dashboard Content -->
   <div id="dashboardContent">
+    
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="profile-avatar">
-        <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" />
+        <i class="fas fa-user-astronaut"></i>
       </div>
       <div class="profile-info">
         <h2>YewsWsi</h2>
@@ -193,6 +315,59 @@
           <span class="profile-tag"><i class="fas fa-code mr-1"></i>Developer</span>
           <span class="profile-tag"><i class="fas fa-pen-fancy mr-1"></i>Designer</span>
           <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Creator</span>
+          <span class="profile-tag"><i class="fas fa-magic mr-1"></i>Scripter</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Notes</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Ideas</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">✦</div>
+        <div class="stat-label">Vibes</div>
+      </div>
+    </div>
+
+    <!-- Notes Grid -->
+    <div class="notes-grid">
+      <div class="note-card tilt-card">
+        <div class="tilt-content">
+          <div class="note-title"><i class="fas fa-bolt mr-1 text-gray-500"></i>Current Focus</div>
+          <div class="note-content">Building interactive glass UI components</div>
+          <div class="note-meta"><i class="far fa-clock"></i> Updated today</div>
+        </div>
+      </div>
+      <div class="note-card tilt-card">
+        <div class="tilt-content">
+          <div class="note-title"><i class="fas fa-rocket mr-1 text-gray-500"></i>Next Project</div>
+          <div class="note-content">Portfolio v3 with 3D animations</div>
+          <div class="note-meta"><i class="far fa-calendar"></i> Starting soon</div>
+        </div>
+      </div>
+      <div class="note-card tilt-card">
+        <div class="tilt-content">
+          <div class="note-title"><i class="fas fa-heart mr-1 text-gray-500"></i>Inspiration</div>
+          <div class="note-content">Minimalist design with bold typography</div>
+          <div class="note-meta"><i class="far fa-star"></i> Favorite</div>
+        </div>
+      </div>
+      <div class="note-card tilt-card">
+        <div class="tilt-content">
+          <div class="note-title"><i class="fas fa-gem mr-1 text-gray-500"></i>Milestone</div>
+          <div class="note-content">5 showcases completed and published</div>
+          <div class="note-meta"><i class="fas fa-check-circle"></i> Done!</div>
         </div>
       </div>
     </div>
@@ -216,7 +391,9 @@
 
   <!-- Made By Footer -->
   <div class="made-by">
-    <span>✦ Made by <span>YewsWsi</span> ✦</span>
+    <i class="fas fa-asterisk"></i>
+    <span>Everything made by YewsWsi</span>
+    <i class="fas fa-asterisk"></i>
   </div>
   
   <div class="h-2"></div>
