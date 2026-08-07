@@ -1,4 +1,4 @@
-// app.js - Developer Portfolio Showcase
+// app.js - Professional Dashboard Showcase
 
 (function() {
   'use strict';
@@ -7,48 +7,48 @@
   const showcases = [
     {
       id: 'v1',
-      title: 'Fitness Tracker',
-      subtitle: 'Glass · Tilt + Tabs',
+      title: 'Showcase V1',
+      subtitle: 'Fitness · Tilt + Tabs',
       file: 'showcases/showcase-v1.html',
       icon: 'fa-dumbbell',
-      color: '#a0a0a0',
-      category: 'ui-ux'
+      category: 'fitness',
+      color: '#a0a0a0'
     },
     {
       id: 'v2',
-      title: 'Portfolio V2',
-      subtitle: 'Glass · Portfolio',
+      title: 'Showcase V2',
+      subtitle: 'Portfolio · Glass',
       file: 'showcases/showcase-v2.html',
       icon: 'fa-user-astronaut',
-      color: '#b0b0b0',
-      category: 'web'
+      category: 'portfolio',
+      color: '#b0b0b0'
     },
     {
       id: 'v3',
-      title: 'Creative Studio',
-      subtitle: 'Glass · Services',
+      title: 'Showcase V3',
+      subtitle: 'Studio · Services',
       file: 'showcases/showcase-v3.html',
       icon: 'fa-palette',
-      color: '#c0c0c0',
-      category: 'ui-ux'
+      category: 'studio',
+      color: '#c0c0c0'
     },
     {
       id: 'v4',
-      title: 'Agency Portfolio',
-      subtitle: 'Glass · Agency',
+      title: 'Showcase V4',
+      subtitle: 'Agency · Portfolio',
       file: 'showcases/showcase-v4.html',
       icon: 'fa-building',
-      color: '#b8b8b8',
-      category: 'web'
+      category: 'agency',
+      color: '#b8b8b8'
     },
     {
       id: 'v5',
-      title: 'Analytics Dashboard',
-      subtitle: 'Glass · Analytics',
+      title: 'Showcase V5',
+      subtitle: 'Analytics · Products',
       file: 'showcases/showcase-v5.html',
       icon: 'fa-chart-simple',
-      color: '#a8a8a8',
-      category: 'data'
+      category: 'analytics',
+      color: '#a8a8a8'
     }
   ];
 
@@ -59,87 +59,50 @@
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
   const modalSub = document.getElementById('modalSub');
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-  const viewAllBtn = document.getElementById('viewAllBtn');
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const projectCount = document.getElementById('projectCount');
 
-  // ===== TAB SYSTEM =====
-  function activateTab(tabId) {
-    // Update buttons
-    tabButtons.forEach(btn => {
-      btn.classList.remove('active');
-      if (btn.dataset.tab === tabId) {
-        btn.classList.add('active');
-      }
-    });
-
-    // Update content
-    tabContents.forEach(content => {
-      content.classList.remove('active');
-      if (content.id === `tab-${tabId}`) {
-        content.classList.add('active');
-      }
-    });
-
-    // Filter showcases
-    filterShowcases(tabId);
-  }
-
-  // ===== FILTER SHOWCASES =====
-  function filterShowcases(category) {
-    const cards = document.querySelectorAll('.showcase-card');
-    
-    cards.forEach(card => {
-      if (category === 'all' || card.dataset.category === category) {
-        card.style.display = 'flex';
-        // Re-animate visible cards
-        gsap.from(card, {
-          opacity: 0,
-          y: 10,
-          duration: 0.4,
-          delay: 0.05,
-          ease: "power2.out"
-        });
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
+  // ===== FILTER STATE =====
+  let currentFilter = 'all';
 
   // ===== RENDER CARDS =====
-  function renderCards() {
+  function renderCards(filter = 'all') {
     listEl.innerHTML = '';
     
-    showcases.forEach((item, index) => {
+    const filtered = filter === 'all' 
+      ? showcases 
+      : showcases.filter(item => item.category === filter);
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = `
+        <div class="text-center py-8 text-gray-400 text-sm">
+          <i class="fas fa-search text-2xl block mb-2"></i>
+          No projects found in this category
+        </div>
+      `;
+      return;
+    }
+
+    filtered.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'showcase-card tilt-card';
       card.dataset.index = index;
       card.dataset.file = item.file;
-      card.dataset.category = item.category;
 
       card.innerHTML = `
         <div class="tilt-content">
-          <div class="flex items-start gap-4">
-            <div class="preview-icon no-tilt">
+          <div class="flex items-center gap-4">
+            <div class="preview-icon no-tilt" style="background: rgba(255,255,255,0.04);">
               <i class="fas ${item.icon} text-gray-400 text-xl"></i>
             </div>
             <div class="flex-1 min-w-0">
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <p class="text-white font-medium text-base truncate">${item.title}</p>
-                  <p class="text-gray-400 text-xs">${item.subtitle}</p>
-                </div>
-                <span class="badge flex-shrink-0">${item.id}</span>
+              <div class="flex items-center justify-between">
+                <p class="text-white font-medium text-sm truncate">${item.title}</p>
+                <span class="badge ml-2 flex-shrink-0">${item.id}</span>
               </div>
-              <div class="flex items-center gap-3 mt-2">
-                <span class="text-gray-500 text-[10px] flex items-center gap-1">
-                  <i class="fas fa-code text-[8px]"></i> ${item.category.replace('-', ' ')}
-                </span>
-                <span class="text-gray-500 text-[10px] flex items-center gap-1">
-                  <i class="fas fa-calendar text-[8px]"></i> 2025
-                </span>
-              </div>
+              <p class="text-gray-400 text-xs truncate">${item.subtitle}</p>
             </div>
+            <i class="fas fa-chevron-right text-gray-500 text-xs no-tilt flex-shrink-0"></i>
           </div>
         </div>
       `;
@@ -155,9 +118,27 @@
       listEl.appendChild(card);
     });
 
+    // Update project count
+    if (projectCount) {
+      projectCount.textContent = filtered.length;
+    }
+
     // Re-init tilt for new cards
     setTimeout(initTilt, 50);
   }
+
+  // ===== TABS =====
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Update active state
+      tabBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Get filter
+      currentFilter = this.dataset.tab;
+      renderCards(currentFilter);
+    });
+  });
 
   // ===== MODAL CONTROLS =====
   function openModal(file, title, sub) {
@@ -171,15 +152,8 @@
   function closeModal() {
     modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
-    // Clear iframe src to stop loading
-    setTimeout(() => {
-      if (!modalOverlay.classList.contains('active')) {
-        // Keep the src to avoid reload flicker
-      }
-    }, 300);
   }
 
-  // Modal event listeners
   modalClose.addEventListener('click', closeModal);
   
   modalOverlay.addEventListener('click', function(e) {
@@ -193,7 +167,7 @@
   // ===== TILT EFFECT =====
   function initTilt() {
     const tiltCards = document.querySelectorAll('.tilt-card');
-    const MAX_TILT = 3.5;
+    const MAX_TILT = 4.5;
 
     tiltCards.forEach(card => {
       if (card._tiltAttached) return;
@@ -212,7 +186,7 @@
         targetRotX = 0;
         targetRotY = 0;
         gsap.to(card, {
-          boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+          boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
           duration: 0.3,
           ease: "power2.out"
         });
@@ -228,10 +202,10 @@
         targetRotX = rotX;
         targetRotY = rotY;
 
-        const shadowX = (x - 0.5) * 6;
-        const shadowY = (y - 0.5) * 6;
+        const shadowX = (x - 0.5) * 8;
+        const shadowY = (y - 0.5) * 8;
         gsap.to(card, {
-          boxShadow: `${shadowX}px ${shadowY}px 25px rgba(0,0,0,0.4)`,
+          boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
           duration: 0.15,
           ease: "power1.out"
         });
@@ -261,88 +235,58 @@
     });
   }
 
-  // ===== STATS COUNTER ANIMATION =====
-  function animateCounters() {
-    const counters = document.querySelectorAll('.stat-value');
-    
-    counters.forEach(counter => {
-      const target = parseInt(counter.dataset.target);
-      const duration = 1500;
-      const startTime = performance.now();
-      
-      function updateCounter(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.floor(eased * target);
-        
-        counter.textContent = current.toLocaleString();
-        
-        if (progress < 1) {
-          requestAnimationFrame(updateCounter);
-        } else {
-          counter.textContent = target.toLocaleString();
-        }
-      }
-      
-      requestAnimationFrame(updateCounter);
-    });
-  }
-
   // ===== ENTRANCE ANIMATIONS =====
   function entranceAnim() {
     const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
     
-    tl.from(".app-container", { 
+    tl.from(".phone-glass", { 
       opacity: 0, 
-      duration: 0.5 
+      y: 20, 
+      scale: 0.97, 
+      duration: 0.7 
     })
-    .from(".hero-section", { 
+    .from(".phone-glass > *", { 
       opacity: 0, 
-      y: 20, 
-      duration: 0.6 
-    }, "-=0.2")
-    .from(".stats-grid", { 
-      opacity: 0, 
-      y: 15, 
+      y: 8, 
+      stagger: 0.04, 
       duration: 0.5 
-    }, "-=0.3")
-    .from(".tabs-container", { 
-      opacity: 0, 
-      y: 15, 
-      duration: 0.5 
-    }, "-=0.2")
-    .from(".showcase-card", { 
-      opacity: 0, 
-      y: 20, 
-      stagger: 0.08, 
-      duration: 0.5 
-    }, "-=0.2");
+    }, "-=0.3");
 
-    // Animate stats after they appear
-    setTimeout(animateCounters, 800);
-  }
-
-  // ===== TAB EVENT LISTENERS =====
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const tabId = this.dataset.tab;
-      activateTab(tabId);
+    // Anime.js micro-animations on cards
+    anime({
+      targets: '.showcase-card',
+      translateY: [6, 0],
+      opacity: [0, 1],
+      duration: 700,
+      easing: 'easeOutQuad',
+      delay: anime.stagger(80, { start: 200 })
     });
-  });
 
-  // ===== VIEW ALL BUTTON =====
-  if (viewAllBtn) {
-    viewAllBtn.addEventListener('click', function() {
-      activateTab('all');
+    // Avatar animation
+    gsap.from('.avatar', { 
+      rotation: -5, 
+      scale: 0.9, 
+      opacity: 0, 
+      duration: 0.7, 
+      delay: 0.3, 
+      ease: "back.out(1.4)" 
+    });
+
+    // Glass elements animation
+    document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
+      gsap.from(el, { 
+        opacity: 0, 
+        y: 10, 
+        duration: 0.5, 
+        delay: 0.1 + i * 0.04, 
+        ease: "power2.out" 
+      });
     });
   }
 
   // ===== INIT =====
-  renderCards();
+  renderCards('all');
   entranceAnim();
-  
-  // Additional tilt init after animations
-  setTimeout(initTilt, 300);
+  setTimeout(initTilt, 200);
 
 })();
