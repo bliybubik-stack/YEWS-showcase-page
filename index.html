@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YewsWsi · Portfolio</title>
+  <title>YewsWsi · Portfolio Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- GSAP & Anime.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: #0b0b0b;
@@ -22,7 +22,7 @@
       padding: 16px;
     }
 
-    /* Glassmorphism – sharp 0.5rem, monochrome, blur */
+    /* Glassmorphism */
     .glass {
       background: rgba(30, 30, 32, 0.35);
       backdrop-filter: blur(12px) saturate(0.8);
@@ -42,16 +42,104 @@
       border-radius: 0.5rem;
     }
 
-    .phone-glass {
+    /* Main container - split screen */
+    .studio-container {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      max-width: 1400px;
+      height: 90vh;
+      min-height: 600px;
+    }
+
+    /* Left panel - Portfolio */
+    .portfolio-panel {
+      flex: 0 0 380px;
       background: rgba(16, 16, 18, 0.55);
       backdrop-filter: blur(18px) saturate(0.5);
       -webkit-backdrop-filter: blur(18px) saturate(0.5);
       border: 1px solid rgba(180, 180, 180, 0.05);
       border-radius: 2rem;
       box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
-      width: 100%;
-      max-width: 480px;
       padding: 24px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #444 transparent;
+    }
+    .portfolio-panel::-webkit-scrollbar { width: 3px; }
+    .portfolio-panel::-webkit-scrollbar-track { background: transparent; }
+    .portfolio-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+
+    /* Right panel - Preview */
+    .preview-panel {
+      flex: 1;
+      background: rgba(16, 16, 18, 0.55);
+      backdrop-filter: blur(18px) saturate(0.5);
+      -webkit-backdrop-filter: blur(18px) saturate(0.5);
+      border: 1px solid rgba(180, 180, 180, 0.05);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .preview-frame {
+      flex: 1;
+      background: #0b0b0b;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.04);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #0b0b0b;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      margin-bottom: 12px;
+    }
+
+    .preview-header h3 {
+      color: #f0f0f0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .preview-header .preview-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .preview-tab {
+      padding: 4px 12px;
+      border-radius: 0.5rem;
+      font-size: 10px;
+      font-weight: 600;
+      color: #888;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preview-tab.active {
+      background: rgba(255,255,255,0.06);
+      color: #f0f0f0;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .preview-tab:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.04);
     }
 
     /* Grayscale */
@@ -61,7 +149,6 @@
     .text-white { color: #f0f0f0; }
     .text-gray-400 { color: #a0a0a0; }
     .text-gray-500 { color: #808080; }
-    .text-xs { color: #b0b0b0; }
 
     /* Tilt cards */
     .tilt-card {
@@ -71,18 +158,15 @@
       cursor: default;
       border-radius: 0.5rem;
     }
-
     .tilt-card .tilt-content {
       transform-style: preserve-3d;
       will-change: transform;
       backface-visibility: hidden;
     }
-
     .tilt-card .no-tilt {
       transform: translateZ(0) !important;
       backface-visibility: hidden;
     }
-
     .tilt-card .tilt-content > * {
       transform: translateZ(0);
     }
@@ -93,115 +177,63 @@
       border: 1px solid rgba(255,255,255,0.06);
       padding: 4px 12px;
       border-radius: 0.5rem;
-      font-size: 11px;
+      font-size: 10px;
       color: #b0b0b0;
       transition: all 0.2s;
+      cursor: default;
     }
     .skill-badge:hover {
       background: rgba(255,255,255,0.08);
       color: #fff;
     }
 
-    /* Project image placeholder */
-    .project-img {
-      background: linear-gradient(145deg, #1a1a1c, #0e0e0f);
-      border-radius: 0.5rem;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255,255,255,0.04);
-    }
-
-    /* Scrollable project list */
-    .project-list {
-      max-height: 240px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #444 transparent;
-    }
-    .project-list::-webkit-scrollbar {
-      width: 3px;
-    }
-    .project-list::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .project-list::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 10px;
-    }
-
-    /* Tab styling */
-    .tab-btn {
-      transition: all 0.2s ease;
-      cursor: pointer;
-      padding: 4px 12px;
-      border-radius: 0.5rem;
-      font-size: 12px;
-      font-weight: 600;
-      color: #888;
-      background: transparent;
-      border: 1px solid transparent;
-    }
-    .tab-btn.active {
-      background: rgba(255,255,255,0.06);
-      color: #f0f0f0;
-      border-color: rgba(255,255,255,0.08);
-    }
-    .tab-btn:hover {
-      color: #fff;
-      background: rgba(255,255,255,0.04);
-    }
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Note cards */
-    .note-card {
+    /* Project cards in left panel */
+    .project-item {
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.04);
       border-radius: 0.5rem;
       padding: 12px 16px;
       transition: all 0.2s;
+      cursor: pointer;
     }
-    .note-card:hover {
-      background: rgba(255,255,255,0.04);
-      transform: translateY(-2px);
+    .project-item:hover {
+      background: rgba(255,255,255,0.045);
+      transform: translateX(4px);
+    }
+    .project-item.active {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.08);
     }
 
-    /* Made by footer */
+    .profile-tag {
+      padding: 3px 12px;
+      border-radius: 0.5rem;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+      color: #a0a0a0;
+    }
+
     .made-by {
-      font-size: 11px;
+      font-size: 10px;
       color: #555;
       text-align: center;
-      padding: 16px 0 4px 0;
+      padding: 12px 0 4px 0;
       letter-spacing: 0.5px;
       border-top: 1px solid rgba(255,255,255,0.03);
       margin-top: 8px;
     }
-    .made-by span {
-      color: #888;
-    }
+    .made-by span { color: #888; }
 
-    /* Three dots menu */
     .menu-dots {
       display: flex;
       gap: 4px;
-      cursor: pointer;
+      cursor: default;
       padding: 4px 8px;
       border-radius: 0.5rem;
-      transition: background 0.2s;
-    }
-    .menu-dots:hover {
-      background: rgba(255,255,255,0.04);
     }
     .menu-dots span {
       display: block;
@@ -211,406 +243,364 @@
       background: #666;
     }
 
-    /* Profile tags */
-    .profile-tag {
-      padding: 3px 12px;
-      border-radius: 0.5rem;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.04);
-      color: #a0a0a0;
+    /* Scrollable list */
+    .project-list-scroll {
+      max-height: 300px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #444 transparent;
+      padding-right: 4px;
     }
-    .profile-tag:hover {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
+    .project-list-scroll::-webkit-scrollbar { width: 3px; }
+    .project-list-scroll::-webkit-scrollbar-track { background: transparent; }
+    .project-list-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .studio-container {
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+        gap: 16px;
+      }
+      .portfolio-panel {
+        flex: none;
+        width: 100%;
+        max-height: 60vh;
+      }
+      .preview-panel {
+        flex: none;
+        height: 500px;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 8px; }
+      .portfolio-panel { padding: 16px; max-height: 50vh; }
+      .preview-panel { padding: 12px; height: 350px; }
+      .project-item { padding: 10px 12px; }
     }
   </style>
 </head>
 <body>
 
-<div class="phone-glass">
+<div class="studio-container">
 
-  <!-- Status Bar -->
-  <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
-    <span class="tracking-wide">Portfolio</span>
-    <div class="flex items-center gap-3">
+  <!-- LEFT PANEL: Portfolio -->
+  <div class="portfolio-panel">
+
+    <!-- Status Bar -->
+    <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
+      <span class="tracking-wide">Portfolio</span>
       <div class="menu-dots">
         <span></span>
         <span></span>
         <span></span>
       </div>
     </div>
-  </div>
 
-  <!-- Header / Profile -->
-  <div class="flex items-center gap-4 mb-5">
-    <div class="w-16 h-16 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
-      <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
-    </div>
-    <div>
-      <h1 class="text-2xl font-bold text-white tracking-tight">YewsWsi</h1>
-      <p class="text-gray-400 text-sm">Creative Developer · Designer</p>
-      <div class="flex gap-2 mt-1 flex-wrap">
-        <span class="profile-tag"><i class="fas fa-code mr-1"></i>Dev</span>
-        <span class="profile-tag"><i class="fas fa-pen-fancy mr-1"></i>Designer</span>
-        <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Creator</span>
+    <!-- Header / Profile -->
+    <div class="flex items-center gap-4 mb-4">
+      <div class="w-14 h-14 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
+        <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+      </div>
+      <div>
+        <h1 class="text-xl font-bold text-white tracking-tight">YewsWsi</h1>
+        <p class="text-gray-400 text-xs">Creative Developer · Designer</p>
+        <div class="flex gap-1 mt-1 flex-wrap">
+          <span class="profile-tag"><i class="fas fa-code mr-1"></i>Dev</span>
+          <span class="profile-tag"><i class="fas fa-pen-fancy mr-1"></i>Design</span>
+          <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Create</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Bio Card – tilt -->
-  <div class="glass-deep p-4 mb-4 tilt-card" id="bioCard">
-    <div class="tilt-content">
-      <p class="text-gray-300 text-sm leading-relaxed">
-        Crafting digital experiences with a focus on <span class="text-white">interaction</span> and 
-        <span class="text-white">motion</span>. Building things that people love.
-      </p>
+    <!-- Bio -->
+    <div class="glass-deep p-3 mb-4 tilt-card">
+      <div class="tilt-content">
+        <p class="text-gray-300 text-xs leading-relaxed">
+          Crafting digital experiences with <span class="text-white">interaction</span> and <span class="text-white">motion</span>.
+        </p>
+      </div>
     </div>
-  </div>
 
-  <!-- Stats Grid – 4 cards -->
-  <div class="grid grid-cols-4 gap-2 mb-4">
-    <div class="glass p-2 text-center tilt-card" id="stat1">
-      <div class="tilt-content">
-        <p class="text-white text-lg font-bold">48</p>
-        <p class="text-gray-400 text-[8px] uppercase tracking-wider">Projects</p>
+    <!-- Stats -->
+    <div class="grid grid-cols-4 gap-2 mb-4">
+      <div class="glass p-2 text-center tilt-card">
+        <div class="tilt-content">
+          <p class="text-white text-base font-bold">48</p>
+          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Projects</p>
+        </div>
+      </div>
+      <div class="glass p-2 text-center tilt-card">
+        <div class="tilt-content">
+          <p class="text-white text-base font-bold">32</p>
+          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Clients</p>
+        </div>
+      </div>
+      <div class="glass p-2 text-center tilt-card">
+        <div class="tilt-content">
+          <p class="text-white text-base font-bold">7</p>
+          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Awards</p>
+        </div>
+      </div>
+      <div class="glass p-2 text-center tilt-card">
+        <div class="tilt-content">
+          <p class="text-white text-base font-bold">5+</p>
+          <p class="text-gray-400 text-[7px] uppercase tracking-wider">Years</p>
+        </div>
       </div>
     </div>
-    <div class="glass p-2 text-center tilt-card" id="stat2">
-      <div class="tilt-content">
-        <p class="text-white text-lg font-bold">32</p>
-        <p class="text-gray-400 text-[8px] uppercase tracking-wider">Clients</p>
-      </div>
-    </div>
-    <div class="glass p-2 text-center tilt-card" id="stat3">
-      <div class="tilt-content">
-        <p class="text-white text-lg font-bold">7</p>
-        <p class="text-gray-400 text-[8px] uppercase tracking-wider">Awards</p>
-      </div>
-    </div>
-    <div class="glass p-2 text-center tilt-card" id="stat4">
-      <div class="tilt-content">
-        <p class="text-white text-lg font-bold">5+</p>
-        <p class="text-gray-400 text-[8px] uppercase tracking-wider">Years</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- Skills & Tools – tilt -->
-  <div class="mb-4">
-    <h2 class="text-white font-bold text-sm mb-2 flex items-center gap-2">
-      <i class="fas fa-tools text-gray-400 text-xs"></i>
-      Skills & Tools
-    </h2>
-    <div class="glass-deep p-4 tilt-card" id="skillsCard">
-      <div class="tilt-content">
-        <div class="flex flex-wrap gap-2">
+    <!-- Skills -->
+    <div class="mb-4">
+      <h2 class="text-white font-bold text-xs mb-2 flex items-center gap-2">
+        <i class="fas fa-tools text-gray-400 text-[10px]"></i> Skills
+      </h2>
+      <div class="glass-deep p-3 tilt-card">
+        <div class="tilt-content flex flex-wrap gap-1.5">
           <span class="skill-badge">Figma</span>
           <span class="skill-badge">Framer</span>
-          <span class="skill-badge">Webflow</span>
           <span class="skill-badge">React</span>
           <span class="skill-badge">GSAP</span>
           <span class="skill-badge">Tailwind</span>
           <span class="skill-badge">Blender</span>
-          <span class="skill-badge">After Effects</span>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Notes Section -->
-  <div class="mb-4">
-    <h2 class="text-white font-bold text-sm mb-2 flex items-center gap-2">
-      <i class="fas fa-sticky-note text-gray-400 text-xs"></i>
-      Notes
-    </h2>
-    <div class="space-y-2">
-      <div class="note-card tilt-card">
-        <div class="tilt-content flex items-start gap-3">
-          <i class="fas fa-lightbulb text-gray-500 text-sm mt-0.5"></i>
-          <div>
-            <p class="text-white text-sm font-medium">Current Focus</p>
-            <p class="text-gray-400 text-xs">Building interactive experiences with GSAP and glassmorphism</p>
-          </div>
-        </div>
-      </div>
-      <div class="note-card tilt-card">
-        <div class="tilt-content flex items-start gap-3">
-          <i class="fas fa-rocket text-gray-500 text-sm mt-0.5"></i>
-          <div>
-            <p class="text-white text-sm font-medium">Next Project</p>
-            <p class="text-gray-400 text-xs">Showcase V6 · 3D portfolio with Three.js</p>
-          </div>
-        </div>
-      </div>
-      <div class="note-card tilt-card">
-        <div class="tilt-content flex items-start gap-3">
-          <i class="fas fa-heart text-gray-500 text-sm mt-0.5"></i>
-          <div>
-            <p class="text-white text-sm font-medium">Currently Learning</p>
-            <p class="text-gray-400 text-xs">React Native · WebGL · Motion Design</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Projects – with Tabs -->
-  <div class="mb-4">
-    <div class="flex justify-between items-center mb-2">
-      <h2 class="text-white font-bold text-sm flex items-center gap-2">
-        <i class="fas fa-folder text-gray-400 text-xs"></i>
-        Projects
+    <!-- Projects List -->
+    <div>
+      <h2 class="text-white font-bold text-xs mb-2 flex items-center gap-2">
+        <i class="fas fa-folder text-gray-400 text-[10px]"></i> Projects
+        <span class="text-gray-500 text-[9px] font-normal ml-auto">click to preview</span>
       </h2>
-      <div class="flex space-x-1">
-        <button class="tab-btn active" data-tab="featured">Featured</button>
-        <button class="tab-btn" data-tab="all">All</button>
-        <button class="tab-btn" data-tab="archive">Archive</button>
+      <div class="project-list-scroll space-y-2" id="projectList">
+        <!-- Projects injected by JS -->
       </div>
     </div>
 
-    <div class="glass-deep p-4 tilt-card" id="projectsCard">
-      <div class="tilt-content">
-        <!-- Featured -->
-        <div class="tab-content active" id="tab-featured">
-          <div class="space-y-3">
-            <div>
-              <div class="project-img mb-2">
-                <i class="fas fa-layer-group text-3xl text-gray-600"></i>
-              </div>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-white font-medium text-sm">Showcase V5</p>
-                  <p class="text-gray-400 text-xs">Analytics · Products · 2025</p>
-                </div>
-                <span class="badge text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded">v5</span>
-              </div>
-            </div>
-            <div class="border-t border-white/5 pt-3">
-              <div class="project-img mb-2">
-                <i class="fas fa-cube text-3xl text-gray-600"></i>
-              </div>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-white font-medium text-sm">Showcase V4</p>
-                  <p class="text-gray-400 text-xs">Agency · Portfolio · 2025</p>
-                </div>
-                <span class="badge text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded">v4</span>
-              </div>
-            </div>
-            <div class="border-t border-white/5 pt-3">
-              <div class="project-img mb-2">
-                <i class="fas fa-palette text-3xl text-gray-600"></i>
-              </div>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-white font-medium text-sm">Showcase V3</p>
-                  <p class="text-gray-400 text-xs">Studio · Services · 2025</p>
-                </div>
-                <span class="badge text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded">v3</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- All Projects -->
-        <div class="tab-content" id="tab-all">
-          <div class="project-list space-y-2">
-            <div class="flex items-center justify-between py-1 border-b border-white/5">
-              <div>
-                <p class="text-white text-sm font-medium">Showcase V5</p>
-                <p class="text-gray-400 text-xs">Analytics · 2025</p>
-              </div>
-              <span class="text-gray-500 text-xs">UI/UX</span>
-            </div>
-            <div class="flex items-center justify-between py-1 border-b border-white/5">
-              <div>
-                <p class="text-white text-sm font-medium">Showcase V4</p>
-                <p class="text-gray-400 text-xs">Agency · 2025</p>
-              </div>
-              <span class="text-gray-500 text-xs">Product</span>
-            </div>
-            <div class="flex items-center justify-between py-1 border-b border-white/5">
-              <div>
-                <p class="text-white text-sm font-medium">Showcase V3</p>
-                <p class="text-gray-400 text-xs">Studio · 2025</p>
-              </div>
-              <span class="text-gray-500 text-xs">Web</span>
-            </div>
-            <div class="flex items-center justify-between py-1 border-b border-white/5">
-              <div>
-                <p class="text-white text-sm font-medium">Showcase V2</p>
-                <p class="text-gray-400 text-xs">Portfolio · 2025</p>
-              </div>
-              <span class="text-gray-500 text-xs">Design</span>
-            </div>
-            <div class="flex items-center justify-between py-1">
-              <div>
-                <p class="text-white text-sm font-medium">Showcase V1</p>
-                <p class="text-gray-400 text-xs">Fitness · 2025</p>
-              </div>
-              <span class="text-gray-500 text-xs">Dev</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Archive -->
-        <div class="tab-content" id="tab-archive">
-          <div class="space-y-2 text-gray-400 text-sm">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-archive text-gray-500 text-xs"></i>
-              <p>• Legacy projects (2020-2022)</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <i class="fas fa-tools text-gray-500 text-xs"></i>
-              <p>• Internal tools & prototypes</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <i class="fas fa-flask text-gray-500 text-xs"></i>
-              <p>• Experimental interfaces</p>
-            </div>
-            <p class="text-gray-500 text-xs mt-2">12 archived projects</p>
-          </div>
-        </div>
-      </div>
+    <!-- Made by -->
+    <div class="made-by">
+      ✦ Everything made by <span>YewsWsi</span> ✦
     </div>
   </div>
 
-  <!-- Made by Footer -->
-  <div class="made-by">
-    ✦ Everything made by <span>YewsWsi</span> ✦
+  <!-- RIGHT PANEL: Preview -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <h3 id="previewTitle"><i class="fas fa-eye mr-2 text-gray-500"></i>Select a project</h3>
+      <div class="preview-tabs">
+        <button class="preview-tab active" data-view="phone">Phone</button>
+        <button class="preview-tab" data-view="desktop">Desktop</button>
+      </div>
+    </div>
+    <div class="preview-frame" id="previewFrame">
+      <iframe id="previewIframe" src="" loading="lazy"></iframe>
+    </div>
   </div>
 
-  <div class="h-2"></div>
 </div>
 
 <script>
   window.addEventListener('load', function() {
-    // ---- GSAP entrance ----
-    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
-    tl.from(".phone-glass", { opacity: 0, y: 20, scale: 0.97, duration: 0.7 })
-      .from(".phone-glass > *", { opacity: 0, y: 8, stagger: 0.05, duration: 0.5 }, "-=0.3");
 
-    // ---- Anime micro-interactions ----
-    anime({
-      targets: '.skill-badge',
-      scale: [0.95, 1],
-      duration: 600,
-      easing: 'easeOutQuad',
-      loop: true,
-      direction: 'alternate',
-      delay: anime.stagger(50)
-    });
+    // ===== PROJECT DATA =====
+    const projects = [
+      {
+        id: 'v1',
+        title: 'Showcase V1',
+        subtitle: 'Fitness · Tilt + Tabs',
+        file: 'showcases/showcase-v1.html',
+        icon: 'fa-dumbbell'
+      },
+      {
+        id: 'v2',
+        title: 'Showcase V2',
+        subtitle: 'Portfolio · Glass',
+        file: 'showcases/showcase-v2.html',
+        icon: 'fa-user-astronaut'
+      },
+      {
+        id: 'v3',
+        title: 'Showcase V3',
+        subtitle: 'Studio · Services',
+        file: 'showcases/showcase-v3.html',
+        icon: 'fa-palette'
+      },
+      {
+        id: 'v4',
+        title: 'Showcase V4',
+        subtitle: 'Agency · Portfolio',
+        file: 'showcases/showcase-v4.html',
+        icon: 'fa-building'
+      },
+      {
+        id: 'v5',
+        title: 'Showcase V5',
+        subtitle: 'Analytics · Products',
+        file: 'showcases/showcase-v5.html',
+        icon: 'fa-chart-simple'
+      }
+    ];
 
-    anime({
-      targets: '.note-card',
-      translateY: [0, -2, 0],
-      duration: 2000,
-      easing: 'easeInOutSine',
-      loop: true,
-      delay: anime.stagger(200)
-    });
+    // ===== DOM ELEMENTS =====
+    const projectList = document.getElementById('projectList');
+    const previewIframe = document.getElementById('previewIframe');
+    const previewTitle = document.getElementById('previewTitle');
+    const viewTabs = document.querySelectorAll('.preview-tab');
+    let currentProject = null;
 
-    // ---- TILT ::: all cards ----
-    const tiltCards = document.querySelectorAll('.tilt-card');
-    const MAX_TILT = 4.5;
+    // ===== RENDER PROJECT LIST =====
+    function renderProjects() {
+      projectList.innerHTML = '';
+      projects.forEach((project, index) => {
+        const item = document.createElement('div');
+        item.className = 'project-item tilt-card';
+        item.dataset.index = index;
+        item.innerHTML = `
+          <div class="tilt-content flex items-center gap-3">
+            <div class="w-8 h-8 bg-white/5 rounded-custom flex items-center justify-center no-tilt flex-shrink-0">
+              <i class="fas ${project.icon} text-gray-400 text-sm"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-white text-sm font-medium truncate">${project.title}</p>
+              <p class="text-gray-400 text-[10px] truncate">${project.subtitle}</p>
+            </div>
+            <i class="fas fa-chevron-right text-gray-500 text-[10px] no-tilt"></i>
+          </div>
+        `;
 
-    tiltCards.forEach(card => {
-      let currentRotX = 0, currentRotY = 0;
-      let targetRotX = 0, targetRotY = 0;
-      let isHovering = false;
-
-      card.addEventListener('mouseenter', () => {
-        isHovering = true;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        isHovering = false;
-        targetRotX = 0;
-        targetRotY = 0;
-        gsap.to(card, {
-          boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
-          duration: 0.3,
-          ease: "power2.out"
-        });
-      });
-
-      card.addEventListener('mousemove', (e) => {
-        if (!isHovering) return;
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        const rotY = (x - 0.5) * 2 * MAX_TILT;
-        const rotX = (y - 0.5) * 2 * MAX_TILT;
-        targetRotX = rotX;
-        targetRotY = rotY;
-
-        const shadowX = (x - 0.5) * 8;
-        const shadowY = (y - 0.5) * 8;
-        gsap.to(card, {
-          boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
-          duration: 0.15,
-          ease: "power1.out"
-        });
-      });
-
-      function animateTilt() {
-        if (!isHovering) {
-          currentRotX += (0 - currentRotX) * 0.08;
-          currentRotY += (0 - currentRotY) * 0.08;
-        } else {
-          currentRotX += (targetRotX - currentRotX) * 0.12;
-          currentRotY += (targetRotY - currentRotY) * 0.12;
-        }
-
-        gsap.set(card, {
-          rotateX: currentRotX,
-          rotateY: currentRotY,
-          transformPerspective: 800,
-          duration: 0.01,
-          overwrite: 'auto'
+        item.addEventListener('click', function() {
+          const idx = parseInt(this.dataset.index);
+          loadProject(idx);
+          // Highlight active
+          document.querySelectorAll('.project-item').forEach(el => el.classList.remove('active'));
+          this.classList.add('active');
         });
 
-        requestAnimationFrame(animateTilt);
+        projectList.appendChild(item);
+      });
+
+      // Auto-load first project
+      if (projects.length > 0) {
+        setTimeout(() => {
+          const firstItem = projectList.querySelector('.project-item');
+          if (firstItem) {
+            firstItem.classList.add('active');
+            loadProject(0);
+          }
+        }, 300);
       }
 
-      animateTilt();
-    });
+      // Re-init tilt
+      setTimeout(initTilt, 50);
+    }
 
-    // ---- Tabs ----
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = {
-      featured: document.getElementById('tab-featured'),
-      all: document.getElementById('tab-all'),
-      archive: document.getElementById('tab-archive')
-    };
+    // ===== LOAD PROJECT IN PREVIEW =====
+    function loadProject(index) {
+      const project = projects[index];
+      if (!project) return;
+      currentProject = project;
+      previewTitle.innerHTML = `<i class="fas fa-eye mr-2 text-gray-500"></i>${project.title}`;
+      previewIframe.src = project.file;
+    }
 
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
-        tabBtns.forEach(b => b.classList.remove('active'));
+    // ===== VIEW TOGGLES =====
+    viewTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        viewTabs.forEach(t => t.classList.remove('active'));
         this.classList.add('active');
-
-        Object.values(tabContents).forEach(content => {
-          content.classList.remove('active');
-        });
-
-        const tabId = this.dataset.tab;
-        if (tabContents[tabId]) {
-          tabContents[tabId].classList.add('active');
+        const view = this.dataset.view;
+        const frame = document.getElementById('previewFrame');
+        if (view === 'phone') {
+          frame.style.maxWidth = '380px';
+          frame.style.margin = '0 auto';
+          frame.style.width = '100%';
+        } else {
+          frame.style.maxWidth = '100%';
+          frame.style.margin = '0';
+          frame.style.width = '100%';
         }
       });
     });
 
-    // ---- Avatar entrance ----
-    gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.7, delay: 0.3, ease: "back.out(1.4)" });
+    // ===== TILT EFFECT =====
+    function initTilt() {
+      const tiltCards = document.querySelectorAll('.tilt-card');
+      const MAX_TILT = 4.5;
 
-    // ---- Extra polish ----
-    document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
-      gsap.from(el, { opacity: 0, y: 10, duration: 0.5, delay: 0.1 + i * 0.06, ease: "power2.out" });
-    });
+      tiltCards.forEach(card => {
+        if (card._tiltAttached) return;
+        card._tiltAttached = true;
+
+        let currentRotX = 0, currentRotY = 0;
+        let targetRotX = 0, targetRotY = 0;
+        let isHovering = false;
+
+        card.addEventListener('mouseenter', () => { isHovering = true; });
+        card.addEventListener('mouseleave', () => {
+          isHovering = false;
+          targetRotX = 0; targetRotY = 0;
+          gsap.to(card, {
+            boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
+            duration: 0.3, ease: "power2.out"
+          });
+        });
+
+        card.addEventListener('mousemove', (e) => {
+          if (!isHovering) return;
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const rotY = (x - 0.5) * 2 * MAX_TILT;
+          const rotX = (y - 0.5) * 2 * MAX_TILT;
+          targetRotX = rotX; targetRotY = rotY;
+          const shadowX = (x - 0.5) * 8;
+          const shadowY = (y - 0.5) * 8;
+          gsap.to(card, {
+            boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
+            duration: 0.15, ease: "power1.out"
+          });
+        });
+
+        function animateTilt() {
+          if (!isHovering) {
+            currentRotX += (0 - currentRotX) * 0.08;
+            currentRotY += (0 - currentRotY) * 0.08;
+          } else {
+            currentRotX += (targetRotX - currentRotX) * 0.12;
+            currentRotY += (targetRotY - currentRotY) * 0.12;
+          }
+          gsap.set(card, {
+            rotateX: currentRotX,
+            rotateY: currentRotY,
+            transformPerspective: 800,
+            duration: 0.01,
+            overwrite: 'auto'
+          });
+          requestAnimationFrame(animateTilt);
+        }
+        animateTilt();
+      });
+    }
+
+    // ===== ENTRANCE ANIMATIONS =====
+    function entranceAnim() {
+      gsap.from('.portfolio-panel', { opacity: 0, x: -20, duration: 0.6, ease: "power2.out" });
+      gsap.from('.preview-panel', { opacity: 0, x: 20, duration: 0.6, ease: "power2.out", delay: 0.2 });
+      gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.6, delay: 0.3, ease: "back.out(1.4)" });
+    }
+
+    // ===== INIT =====
+    renderProjects();
+    entranceAnim();
+    setTimeout(initTilt, 200);
+
+    // Set default view to phone
+    document.querySelector('.preview-tab.active')?.click();
+
   });
 </script>
 
