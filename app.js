@@ -1,64 +1,54 @@
-// app.js - YewsWsi Developer Portfolio
+// app.js - YewsWsi Premium Portfolio
 
 (function() {
   'use strict';
 
-  // ===== DATA =====
+  // ===== PROJECT DATA =====
   const projects = [
     {
       id: 'v1',
-      title: 'Showcase V1',
-      subtitle: 'Fitness · Tilt + Tabs',
-      category: 'all',
+      title: 'Fitness Dashboard',
+      subtitle: 'Tilt + Tabs · Interactive Glass',
+      category: 'fitness',
       file: 'showcases/showcase-v1.html',
       icon: 'fa-dumbbell',
-      color: '#a0a0a0',
-      date: '2024',
-      tech: ['GSAP', 'Anime.js', 'Tailwind']
+      color: '#a0a0a0'
     },
     {
       id: 'v2',
-      title: 'Showcase V2',
-      subtitle: 'Portfolio · Glass',
-      category: 'all',
+      title: 'Portfolio Showcase',
+      subtitle: 'Glass · Monochrome · Tilt',
+      category: 'portfolio',
       file: 'showcases/showcase-v2.html',
       icon: 'fa-user-astronaut',
-      color: '#b0b0b0',
-      date: '2024',
-      tech: ['GSAP', 'Anime.js', 'Tailwind']
+      color: '#b0b0b0'
     },
     {
       id: 'v3',
-      title: 'Showcase V3',
-      subtitle: 'Studio · Services',
-      category: 'all',
+      title: 'Studio Services',
+      subtitle: 'Brand · Digital · Motion',
+      category: 'studio',
       file: 'showcases/showcase-v3.html',
       icon: 'fa-palette',
-      color: '#c0c0c0',
-      date: '2024',
-      tech: ['GSAP', 'Anime.js', 'Tailwind']
+      color: '#c0c0c0'
     },
     {
       id: 'v4',
-      title: 'Showcase V4',
-      subtitle: 'Agency · Portfolio',
-      category: 'all',
+      title: 'Agency Portfolio',
+      subtitle: 'Team · Projects · Awards',
+      category: 'agency',
       file: 'showcases/showcase-v4.html',
       icon: 'fa-building',
-      color: '#b8b8b8',
-      date: '2024',
-      tech: ['GSAP', 'Anime.js', 'Tailwind']
+      color: '#b8b8b8'
     },
     {
       id: 'v5',
-      title: 'Showcase V5',
-      subtitle: 'Analytics · Products',
-      category: 'all',
+      title: 'Analytics Showcase',
+      subtitle: 'Products · Graphs · Stats',
+      category: 'analytics',
       file: 'showcases/showcase-v5.html',
       icon: 'fa-chart-simple',
-      color: '#a8a8a8',
-      date: '2024',
-      tech: ['GSAP', 'Anime.js', 'Tailwind']
+      color: '#a8a8a8'
     }
   ];
 
@@ -70,7 +60,6 @@
   const modalTitle = document.getElementById('modalTitle');
   const modalSub = document.getElementById('modalSub');
   const tabBtns = document.querySelectorAll('.tab-btn');
-  const projectCount = document.getElementById('projectCount');
 
   // ===== RENDER CARDS =====
   function renderCards(category = 'all') {
@@ -79,39 +68,32 @@
       : projects.filter(p => p.category === category);
     
     listEl.innerHTML = '';
-    projectCount.textContent = filtered.length;
 
-    filtered.forEach((item, index) => {
+    filtered.forEach((item) => {
       const card = document.createElement('div');
       card.className = 'showcase-card tilt-card';
-      card.dataset.index = index;
       card.dataset.file = item.file;
 
       card.innerHTML = `
-        <div class="tilt-content">
-          <div class="flex items-center gap-4">
-            <div class="preview-icon no-tilt">
-              <i class="fas ${item.icon} text-gray-400 text-xl"></i>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center justify-between">
-                <p class="text-white font-medium text-sm">${item.title}</p>
-                <span class="badge">${item.id}</span>
-              </div>
-              <p class="text-gray-400 text-xs">${item.subtitle}</p>
-              <div class="flex gap-2 mt-1 flex-wrap">
-                ${item.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-              </div>
-            </div>
-            <i class="fas fa-chevron-right text-gray-500 text-xs no-tilt"></i>
+        <div class="tilt-content card-content">
+          <div class="card-icon no-tilt">
+            <i class="fas ${item.icon}"></i>
           </div>
+          <div class="card-info">
+            <div class="card-title">
+              <h4>${item.title}</h4>
+              <span class="badge">${item.id}</span>
+            </div>
+            <p class="card-subtitle">${item.subtitle}</p>
+          </div>
+          <i class="fas fa-chevron-right card-arrow"></i>
         </div>
       `;
 
-      card.addEventListener('click', function(e) {
+      card.addEventListener('click', function() {
         const file = this.dataset.file;
-        const title = this.querySelector('.text-white')?.textContent || 'Project';
-        const sub = this.querySelector('.text-gray-400')?.textContent || '';
+        const title = this.querySelector('.card-title h4')?.textContent || 'Project';
+        const sub = this.querySelector('.card-subtitle')?.textContent || '';
         openModal(file, title, sub);
       });
 
@@ -126,16 +108,14 @@
     btn.addEventListener('click', function() {
       tabBtns.forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-      
-      const category = this.dataset.tab;
-      renderCards(category);
+      renderCards(this.dataset.tab);
     });
   });
 
-  // ===== MODAL CONTROLS =====
+  // ===== MODAL =====
   function openModal(file, title, sub) {
-    modalTitle.textContent = title || 'Project';
-    modalSub.textContent = sub || 'preview';
+    modalTitle.textContent = title;
+    modalSub.textContent = sub;
     modalIframe.src = file;
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -144,24 +124,17 @@
   function closeModal() {
     modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
-    setTimeout(() => {
-      if (!modalOverlay.classList.contains('active')) {
-        // Keep src for smoothness
-      }
-    }, 300);
   }
 
   modalClose.addEventListener('click', closeModal);
-  
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
-  
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
 
-  // ===== TILT EFFECT =====
+  // ===== TILT =====
   function initTilt() {
     const tiltCards = document.querySelectorAll('.tilt-card');
     const MAX_TILT = 4.5;
@@ -174,10 +147,7 @@
       let targetRotX = 0, targetRotY = 0;
       let isHovering = false;
 
-      card.addEventListener('mouseenter', () => {
-        isHovering = true;
-      });
-
+      card.addEventListener('mouseenter', () => { isHovering = true; });
       card.addEventListener('mouseleave', () => {
         isHovering = false;
         targetRotX = 0;
@@ -232,53 +202,25 @@
     });
   }
 
-  // ===== ENTRANCE ANIMATIONS =====
+  // ===== ANIMATIONS =====
   function entranceAnim() {
     const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
     
-    tl.from(".phone-glass", { 
-      opacity: 0, 
-      y: 30, 
-      scale: 0.95, 
-      duration: 0.7 
-    })
-    .from(".profile-section", { 
-      opacity: 0, 
-      y: 20, 
-      duration: 0.6 
-    }, "-=0.3")
-    .from(".badge-group .badge", { 
-      opacity: 0, 
-      scale: 0.8, 
-      stagger: 0.08, 
-      duration: 0.4 
-    }, "-=0.2")
-    .from(".tabs-container", { 
-      opacity: 0, 
-      y: 10, 
-      duration: 0.5 
-    }, "-=0.2");
+    tl.from(".phone-glass", { opacity: 0, y: 30, scale: 0.95, duration: 0.7 })
+      .from(".hero-section", { opacity: 0, y: 20, duration: 0.6 }, "-=0.3")
+      .from(".hero-tag", { opacity: 0, scale: 0.8, stagger: 0.08, duration: 0.4 }, "-=0.2")
+      .from(".stats-row .stat-card", { opacity: 0, y: 15, stagger: 0.08, duration: 0.5 }, "-=0.2")
+      .from(".tabs-container .tab-btn", { opacity: 0, y: 10, stagger: 0.05, duration: 0.4 }, "-=0.2");
 
-    // Anime.js micro-animations
     anime({
       targets: '.showcase-card',
       translateY: [10, 0],
       opacity: [0, 1],
       duration: 600,
       easing: 'easeOutQuad',
-      delay: anime.stagger(60, { start: 300 })
+      delay: anime.stagger(60, { start: 400 })
     });
 
-    // Profile icon pulse
-    anime({
-      targets: '.profile-icon',
-      scale: [1, 1.05, 1],
-      duration: 3000,
-      easing: 'easeInOutQuad',
-      loop: true
-    });
-
-    // Glass elements
     document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
       gsap.from(el, { 
         opacity: 0, 
