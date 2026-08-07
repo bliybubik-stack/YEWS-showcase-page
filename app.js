@@ -1,4 +1,4 @@
-// app.js - Main Showcase Page JavaScript
+// app.js - Developer Portfolio Showcase
 
 (function() {
   'use strict';
@@ -9,41 +9,46 @@
       id: 'v1',
       title: 'Showcase V1',
       subtitle: 'Fitness · Tilt + Tabs',
-      file: 'showcase-v1.html',
+      file: 'showcases/showcase-v1.html',
       icon: 'fa-dumbbell',
-      color: '#a0a0a0'
+      category: 'fitness',
+      year: '2026'
     },
     {
       id: 'v2',
       title: 'Showcase V2',
       subtitle: 'Portfolio · Glass',
-      file: 'showcase-v2.html',
+      file: 'showcases/showcase-v2.html',
       icon: 'fa-user-astronaut',
-      color: '#b0b0b0'
+      category: 'portfolio',
+      year: '2026'
     },
     {
       id: 'v3',
       title: 'Showcase V3',
       subtitle: 'Studio · Services',
-      file: 'showcase-v3.html',
+      file: 'showcases/showcase-v3.html',
       icon: 'fa-palette',
-      color: '#c0c0c0'
+      category: 'studio',
+      year: '2026'
     },
     {
       id: 'v4',
       title: 'Showcase V4',
       subtitle: 'Agency · Portfolio',
-      file: 'showcase-v4.html',
+      file: 'showcases/showcase-v4.html',
       icon: 'fa-building',
-      color: '#b8b8b8'
+      category: 'agency',
+      year: '2026'
     },
     {
       id: 'v5',
       title: 'Showcase V5',
       subtitle: 'Analytics · Products',
-      file: 'showcase-v5.html',
+      file: 'showcases/showcase-v5.html',
       icon: 'fa-chart-simple',
-      color: '#a8a8a8'
+      category: 'analytics',
+      year: '2026'
     }
   ];
 
@@ -54,39 +59,85 @@
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
   const modalSub = document.getElementById('modalSub');
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const aboutBtn = document.getElementById('aboutBtn');
+  const projectsBtn = document.getElementById('projectsBtn');
+  const aboutSection = document.getElementById('aboutSection');
+  const projectsSection = document.getElementById('projectsSection');
 
-  // ===== RENDER CARDS =====
-  function renderCards() {
+  // ===== TAB SYSTEM =====
+  function switchTab(tab) {
+    // Remove active from all tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    // Hide all sections
+    aboutSection.classList.remove('active');
+    projectsSection.classList.remove('active');
+    
+    if (tab === 'about') {
+      aboutBtn.classList.add('active');
+      aboutSection.classList.add('active');
+    } else {
+      projectsBtn.classList.add('active');
+      projectsSection.classList.add('active');
+    }
+  }
+
+  // Tab event listeners
+  aboutBtn.addEventListener('click', () => switchTab('about'));
+  projectsBtn.addEventListener('click', () => switchTab('projects'));
+
+  // ===== RENDER PROJECT CARDS =====
+  function renderCards(filter = 'all') {
     listEl.innerHTML = '';
     
-    showcases.forEach((item, index) => {
+    const filtered = filter === 'all' 
+      ? showcases 
+      : showcases.filter(s => s.category === filter);
+    
+    if (filtered.length === 0) {
+      listEl.innerHTML = `
+        <div class="text-center text-gray-400 py-8">
+          <i class="fas fa-search text-2xl mb-2"></i>
+          <p>No projects found in this category</p>
+        </div>
+      `;
+      return;
+    }
+    
+    filtered.forEach((item, index) => {
       const card = document.createElement('div');
-      card.className = 'showcase-card tilt-card flex items-center gap-4';
-      card.dataset.index = index;
-      card.dataset.file = item.file;
-
+      card.className = 'showcase-card tilt-card';
+      
       card.innerHTML = `
-        <div class="tilt-content flex items-center gap-4 w-full">
-          <div class="preview-icon no-tilt">
-            <i class="fas ${item.icon} text-gray-400 text-xl"></i>
-          </div>
-          <div class="flex-1">
-            <div class="flex items-center justify-between">
-              <p class="text-white font-medium text-sm">${item.title}</p>
-              <span class="badge">${item.id}</span>
+        <div class="tilt-content">
+          <div class="flex items-start gap-4">
+            <div class="preview-icon no-tilt">
+              <i class="fas ${item.icon} text-gray-400 text-xl"></i>
             </div>
-            <p class="text-gray-400 text-xs">${item.subtitle}</p>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <p class="text-white font-medium text-sm truncate">${item.title}</p>
+                  <p class="text-gray-400 text-xs">${item.subtitle}</p>
+                </div>
+                <span class="badge flex-shrink-0">${item.year}</span>
+              </div>
+              <div class="flex items-center gap-2 mt-2">
+                <span class="text-[8px] uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-0.5 rounded">${item.category}</span>
+                <span class="text-[8px] text-gray-500">•</span>
+                <span class="text-[8px] text-gray-500">${item.id}</span>
+              </div>
+            </div>
           </div>
-          <i class="fas fa-chevron-right text-gray-500 text-xs no-tilt"></i>
         </div>
       `;
 
       // Click to open modal
-      card.addEventListener('click', function(e) {
-        const file = this.dataset.file;
-        const title = this.querySelector('.text-white')?.textContent || 'Showcase';
-        const sub = this.querySelector('.text-gray-400')?.textContent || '';
-        openModal(file, title, sub);
+      card.addEventListener('click', function() {
+        openModal(item.file, item.title, item.subtitle);
       });
 
       listEl.appendChild(card);
@@ -95,6 +146,16 @@
     // Re-init tilt for new cards
     setTimeout(initTilt, 50);
   }
+
+  // ===== CATEGORY FILTER =====
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      renderCards(filter);
+    });
+  });
 
   // ===== MODAL CONTROLS =====
   function openModal(file, title, sub) {
@@ -108,15 +169,17 @@
   function closeModal() {
     modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!modalOverlay.classList.contains('active')) {
+        // Keep src for smoothness
+      }
+    }, 300);
   }
 
-  // Modal event listeners
   modalClose.addEventListener('click', closeModal);
-  
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
-  
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
@@ -127,7 +190,6 @@
     const MAX_TILT = 4.5;
 
     tiltCards.forEach(card => {
-      // Avoid duplicate listeners
       if (card._tiltAttached) return;
       card._tiltAttached = true;
 
@@ -206,28 +268,18 @@
     .from(".phone-glass > *", { 
       opacity: 0, 
       y: 8, 
-      stagger: 0.05, 
+      stagger: 0.04, 
       duration: 0.5 
     }, "-=0.3");
 
-    // Anime.js micro-animations on cards
-    anime({
-      targets: '.showcase-card',
-      translateY: [6, 0],
-      opacity: [0, 1],
-      duration: 700,
-      easing: 'easeOutQuad',
-      delay: anime.stagger(80, { start: 200 })
-    });
-
-    // Avatar animation
-    gsap.from('.avatar', { 
-      rotation: -5, 
-      scale: 0.9, 
+    // Avatar icon animation (no human photo)
+    gsap.from('.avatar-icon', { 
+      rotation: -10, 
+      scale: 0.8, 
       opacity: 0, 
       duration: 0.7, 
       delay: 0.3, 
-      ease: "back.out(1.4)" 
+      ease: "back.out(1.7)" 
     });
 
     // Glass elements animation
@@ -235,18 +287,30 @@
       gsap.from(el, { 
         opacity: 0, 
         y: 10, 
-        duration: 0.5, 
-        delay: 0.1 + i * 0.06, 
+        duration: 0.4, 
+        delay: 0.1 + i * 0.04, 
         ease: "power2.out" 
       });
     });
+
+    // Anime.js micro-animations on cards
+    setTimeout(() => {
+      anime({
+        targets: '.showcase-card',
+        translateY: [6, 0],
+        opacity: [0, 1],
+        duration: 600,
+        easing: 'easeOutQuad',
+        delay: anime.stagger(60, { start: 200 })
+      });
+    }, 300);
   }
 
   // ===== INIT =====
-  renderCards();
+  // Show projects by default
+  switchTab('projects');
+  renderCards('all');
   entranceAnim();
-  
-  // Additional tilt init after animations
   setTimeout(initTilt, 200);
 
 })();
