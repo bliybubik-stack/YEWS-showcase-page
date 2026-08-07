@@ -59,35 +59,6 @@
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
   const modalSub = document.getElementById('modalSub');
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const aboutBtn = document.getElementById('aboutBtn');
-  const projectsBtn = document.getElementById('projectsBtn');
-  const aboutSection = document.getElementById('aboutSection');
-  const projectsSection = document.getElementById('projectsSection');
-
-  // ===== TAB SYSTEM =====
-  function switchTab(tab) {
-    // Remove active from all tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-    
-    // Hide all sections
-    aboutSection.classList.remove('active');
-    projectsSection.classList.remove('active');
-    
-    if (tab === 'about') {
-      aboutBtn.classList.add('active');
-      aboutSection.classList.add('active');
-    } else {
-      projectsBtn.classList.add('active');
-      projectsSection.classList.add('active');
-    }
-  }
-
-  // Tab event listeners
-  aboutBtn.addEventListener('click', () => switchTab('about'));
-  projectsBtn.addEventListener('click', () => switchTab('projects'));
 
   // ===== RENDER PROJECT CARDS =====
   function renderCards(filter = 'all') {
@@ -100,38 +71,37 @@
     if (filtered.length === 0) {
       listEl.innerHTML = `
         <div class="text-center text-gray-400 py-8">
-          <i class="fas fa-search text-2xl mb-2"></i>
-          <p>No projects found in this category</p>
+          <i class="fas fa-search text-2xl mb-2 opacity-50"></i>
+          <p class="text-sm">No projects in this category</p>
         </div>
       `;
       return;
     }
     
-    filtered.forEach((item, index) => {
+    filtered.forEach((item) => {
       const card = document.createElement('div');
       card.className = 'showcase-card tilt-card';
       
       card.innerHTML = `
-        <div class="tilt-content">
-          <div class="flex items-start gap-4">
-            <div class="preview-icon no-tilt">
-              <i class="fas ${item.icon} text-gray-400 text-xl"></i>
+        <div class="tilt-content flex items-center gap-4">
+          <div class="preview-icon no-tilt">
+            <i class="fas ${item.icon} text-gray-400 text-lg"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <p class="text-white font-medium text-sm truncate">${item.title}</p>
+                <p class="text-gray-400 text-xs">${item.subtitle}</p>
+              </div>
+              <span class="text-[9px] text-gray-500 bg-white/5 px-2 py-0.5 rounded flex-shrink-0">${item.year}</span>
             </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <p class="text-white font-medium text-sm truncate">${item.title}</p>
-                  <p class="text-gray-400 text-xs">${item.subtitle}</p>
-                </div>
-                <span class="badge flex-shrink-0">${item.year}</span>
-              </div>
-              <div class="flex items-center gap-2 mt-2">
-                <span class="text-[8px] uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-0.5 rounded">${item.category}</span>
-                <span class="text-[8px] text-gray-500">•</span>
-                <span class="text-[8px] text-gray-500">${item.id}</span>
-              </div>
+            <div class="flex items-center gap-2 mt-1.5">
+              <span class="project-category">${item.category}</span>
+              <span class="text-[8px] text-gray-600">•</span>
+              <span class="text-[8px] text-gray-500">${item.id}</span>
             </div>
           </div>
+          <i class="fas fa-chevron-right text-gray-500 text-xs no-tilt flex-shrink-0 opacity-50"></i>
         </div>
       `;
 
@@ -169,11 +139,6 @@
   function closeModal() {
     modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
-    setTimeout(() => {
-      if (!modalOverlay.classList.contains('active')) {
-        // Keep src for smoothness
-      }
-    }, 300);
   }
 
   modalClose.addEventListener('click', closeModal);
@@ -272,7 +237,7 @@
       duration: 0.5 
     }, "-=0.3");
 
-    // Avatar icon animation (no human photo)
+    // Avatar icon animation
     gsap.from('.avatar-icon', { 
       rotation: -10, 
       scale: 0.8, 
@@ -280,6 +245,16 @@
       duration: 0.7, 
       delay: 0.3, 
       ease: "back.out(1.7)" 
+    });
+
+    // Tags animation
+    gsap.from('.tag', {
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.4,
+      stagger: 0.06,
+      delay: 0.4,
+      ease: "back.out(1.4)"
     });
 
     // Glass elements animation
@@ -293,22 +268,20 @@
       });
     });
 
-    // Anime.js micro-animations on cards
+    // Cards animation
     setTimeout(() => {
       anime({
         targets: '.showcase-card',
-        translateY: [6, 0],
+        translateY: [8, 0],
         opacity: [0, 1],
         duration: 600,
         easing: 'easeOutQuad',
-        delay: anime.stagger(60, { start: 200 })
+        delay: anime.stagger(60, { start: 300 })
       });
     }, 300);
   }
 
   // ===== INIT =====
-  // Show projects by default
-  switchTab('projects');
   renderCards('all');
   entranceAnim();
   setTimeout(initTilt, 200);
