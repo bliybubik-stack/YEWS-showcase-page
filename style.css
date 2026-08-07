@@ -1,51 +1,149 @@
-/* ===== TAGS ===== */
-.tag {
-  display: inline-block;
-  padding: 2px 12px;
-  border-radius: 0.5rem;
-  font-size: 10px;
-  font-weight: 500;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+/* ===== NEW STYLES FOR DEVELOPER LAYOUT ===== */
+
+/* Fullscreen */
+html, body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.phone-glass {
+  max-width: 720px;
+  width: 100%;
+  padding: 28px 24px;
+  min-height: 90vh;
+  max-height: 95vh;
+  overflow-y: auto;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Profile Section */
+.profile-section {
+  margin-bottom: 28px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.profile-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-size: 28px;
+  color: #c0c0c0;
+  flex-shrink: 0;
+}
+
+.profile-info h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f0f0f0;
+  letter-spacing: -0.5px;
+}
+
+.profile-info p {
+  color: #a0a0a0;
+  font-size: 14px;
+}
+
+.badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 12px 0;
+}
+
+.badge-group .badge {
+  padding: 4px 14px;
+  font-size: 10px;
+}
+
+.bio-text {
+  color: #b0b0b0;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+/* Projects Section */
+.projects-section {
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Tabs */
+.tabs-container {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
   transition: all 0.2s ease;
-  cursor: default;
+  cursor: pointer;
+  padding: 6px 16px;
+  border-radius: 0.5rem;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  background: transparent;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tab-btn.active {
+  background: rgba(255,255,255,0.06);
+  color: #f0f0f0;
+  border-color: rgba(255,255,255,0.08);
+}
+
+.tab-btn:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.04);
+}
+
+/* Tech Tags */
+.tech-tag {
+  font-size: 8px;
+  padding: 1px 8px;
+  border-radius: 0.5rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #888;
+  text-transform: uppercase;
   letter-spacing: 0.3px;
 }
 
-.tag:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #f0f0f0;
-  transform: translateY(-1px);
-}
-
-/* ===== FILTER BUTTONS ===== */
-.filter-btn {
-  padding: 4px 14px;
-  border-radius: 0.5rem;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: #888;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.filter-btn:hover {
-  color: #f0f0f0;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.filter-btn.active {
-  background: rgba(255, 255, 255, 0.08);
-  color: #f0f0f0;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* ===== SHOWCASE CARDS ===== */
+/* Showcase Cards - updated */
 .showcase-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.04);
@@ -58,80 +156,63 @@
 .showcase-card:hover {
   background: rgba(255, 255, 255, 0.045);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
 }
 
-.showcase-card .preview-icon {
-  width: 44px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  flex-shrink: 0;
+/* Footer */
+.footer-section {
+  margin-top: 4px;
 }
 
-/* ===== PROJECT CATEGORY BADGE ===== */
-.project-category {
-  display: inline-block;
-  padding: 1px 10px;
-  border-radius: 0.5rem;
-  font-size: 8px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  color: #888;
-}
-
-/* ===== AVATAR ICON ===== */
-.avatar-icon {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.avatar-icon:hover {
-  transform: scale(1.05) rotate(-5deg);
-}
-
-/* ===== MADE BY BADGE ===== */
-.made-by-badge {
-  display: inline-block;
-  padding: 4px 16px;
-  border-radius: 0.5rem;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  color: #666;
-}
-
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 480px) {
-  .tag {
-    font-size: 9px;
-    padding: 2px 10px;
+  .phone-glass {
+    padding: 16px;
+    min-height: 95vh;
+    max-height: 98vh;
   }
   
-  .filter-btn {
+  .profile-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+  
+  .profile-info h1 {
+    font-size: 22px;
+  }
+  
+  .badge-group .badge {
     font-size: 9px;
     padding: 3px 10px;
   }
   
+  .tab-btn {
+    font-size: 9px;
+    padding: 4px 12px;
+  }
+  
   .showcase-card {
-    padding: 12px 14px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .phone-glass {
+    padding: 12px;
   }
   
-  .showcase-card .preview-icon {
-    width: 38px;
-    height: 38px;
+  .profile-header {
+    gap: 12px;
   }
   
-  .showcase-card .preview-icon i {
-    font-size: 14px !important;
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .profile-info h1 {
+    font-size: 18px;
   }
 }
