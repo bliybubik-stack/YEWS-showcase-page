@@ -3,38 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YewsWsi · Studio</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>YewsWsi · Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP & Anime.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* ===== RESET & BASE ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      background: #0b0b0b;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0b0b0b;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
       margin: 0;
-      color: #f0f0f0;
+      padding: 16px;
     }
 
-    /* ===== GLASS ===== */
+    /* Glassmorphism – sharp 0.5rem, monochrome, blur */
     .glass {
       background: rgba(30, 30, 32, 0.35);
       backdrop-filter: blur(12px) saturate(0.8);
       -webkit-backdrop-filter: blur(12px) saturate(0.8);
       border: 1px solid rgba(200, 200, 200, 0.08);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
       border-radius: 0.5rem;
       transition: box-shadow 0.2s ease;
     }
@@ -44,428 +38,30 @@
       backdrop-filter: blur(16px) saturate(0.6);
       -webkit-backdrop-filter: blur(16px) saturate(0.6);
       border: 1px solid rgba(180, 180, 180, 0.06);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
       border-radius: 0.5rem;
     }
 
-    /* ===== MAIN LAYOUT ===== */
-    .app-container {
-      display: flex;
-      gap: 24px;
-      width: 100%;
-      max-width: 1400px;
-      min-height: 90vh;
-      align-items: stretch;
-    }
-
-    /* LEFT: Dashboard */
-    .dashboard-left {
-      flex: 0 0 420px;
-      max-width: 420px;
+    .phone-glass {
       background: rgba(16, 16, 18, 0.55);
       backdrop-filter: blur(18px) saturate(0.5);
       -webkit-backdrop-filter: blur(18px) saturate(0.5);
       border: 1px solid rgba(180, 180, 180, 0.05);
       border-radius: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.02);
-      padding: 28px 24px;
-      overflow-y: auto;
-      max-height: 90vh;
-    }
-
-    /* RIGHT: Preview & Editor */
-    .editor-right {
-      flex: 1;
-      min-width: 0;
-      background: rgba(16, 16, 18, 0.55);
-      backdrop-filter: blur(18px) saturate(0.5);
-      -webkit-backdrop-filter: blur(18px) saturate(0.5);
-      border: 1px solid rgba(180, 180, 180, 0.05);
-      border-radius: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.02);
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      max-height: 90vh;
-    }
-
-    .editor-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      margin-bottom: 16px;
-      flex-shrink: 0;
-    }
-
-    .editor-header .dots {
-      display: flex;
-      gap: 8px;
-    }
-
-    .editor-header .dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #333;
-    }
-
-    .editor-header .dots span:nth-child(1) { background: #ff5f57; }
-    .editor-header .dots span:nth-child(2) { background: #ffbd2e; }
-    .editor-header .dots span:nth-child(3) { background: #28c840; }
-
-    .editor-header .editor-title {
-      font-size: 12px;
-      color: #666;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    .editor-header .editor-title span {
-      color: #888;
-    }
-
-    .editor-preview {
-      flex: 1;
-      min-height: 0;
-      background: #0b0b0b;
-      border-radius: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .editor-preview iframe {
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
       width: 100%;
-      height: 100%;
-      border: none;
-      background: #0b0b0b;
+      max-width: 480px;
+      padding: 24px;
     }
 
-    .editor-empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      color: #444;
-      gap: 12px;
-    }
+    /* Grayscale */
+    img, svg, .icon { filter: grayscale(1); }
+    .avatar { border-radius: 0.5rem; filter: grayscale(1); }
 
-    .editor-empty i {
-      font-size: 48px;
-      color: #333;
-    }
-
-    .editor-empty p {
-      font-size: 14px;
-      color: #555;
-    }
-
-    .editor-empty .hint {
-      font-size: 12px;
-      color: #3a3a3a;
-    }
-
-    /* ===== SCROLLBAR ===== */
-    .dashboard-left::-webkit-scrollbar,
-    .editor-right::-webkit-scrollbar {
-      width: 3px;
-    }
-
-    .dashboard-left::-webkit-scrollbar-track,
-    .editor-right::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .dashboard-left::-webkit-scrollbar-thumb,
-    .editor-right::-webkit-scrollbar-thumb {
-      background: #444;
-      border-radius: 10px;
-    }
-
-    .dashboard-left {
-      scrollbar-width: thin;
-      scrollbar-color: #444 transparent;
-    }
-
-    /* ===== DASHBOARD STYLES ===== */
-
-    /* Status */
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 20px;
-    }
-
-    .status-bar .dots-menu {
-      display: flex;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .status-bar .dots-menu span {
-      display: block;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #555;
-    }
-
-    .status-bar .status-time {
-      color: #555;
-      font-size: 12px;
-    }
-
-    /* Profile */
-    .profile-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .profile-avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid rgba(255, 255, 255, 0.06);
-      flex-shrink: 0;
-    }
-
-    .profile-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(1);
-    }
-
-    .profile-info h2 {
-      font-size: 20px;
-      font-weight: 700;
-      color: #f0f0f0;
-      margin: 0;
-    }
-
-    .profile-info .handle {
-      font-size: 12px;
-      color: #666;
-      margin: 2px 0 6px 0;
-    }
-
-    .profile-tags {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-
-    .profile-tag {
-      padding: 2px 10px;
-      border-radius: 0.5rem;
-      font-size: 9px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      color: #888;
-    }
-
-    /* Stats */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .stat-card {
-      text-align: center;
-      padding: 12px 4px;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-    }
-
-    .stat-card .stat-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: #f0f0f0;
-    }
-
-    .stat-card .stat-label {
-      font-size: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #555;
-      margin-top: 2px;
-    }
-
-    /* Projects list */
-    .projects-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .projects-header h2 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #f0f0f0;
-    }
-
-    .projects-header .project-count {
-      font-size: 10px;
-      color: #555;
-    }
-
-    .project-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .project-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .project-item:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.06);
-      transform: translateX(4px);
-    }
-
-    .project-item .project-icon {
-      width: 36px;
-      height: 36px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .project-item .project-icon i {
-      color: #666;
-      font-size: 14px;
-    }
-
-    .project-item .project-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .project-item .project-info .title {
-      font-size: 13px;
-      font-weight: 500;
-      color: #f0f0f0;
-    }
-
-    .project-item .project-info .subtitle {
-      font-size: 10px;
-      color: #555;
-    }
-
-    .project-item .project-badge {
-      font-size: 8px;
-      padding: 2px 8px;
-      border-radius: 0.5rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      color: #555;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Footer */
-    .made-by {
-      text-align: center;
-      padding: 16px 0 4px 0;
-      font-size: 11px;
-      color: #333;
-      border-top: 1px solid rgba(255, 255, 255, 0.02);
-      margin-top: 16px;
-    }
-
-    .made-by span {
-      color: #444;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .app-container {
-        flex-direction: column;
-        max-width: 640px;
-      }
-
-      .dashboard-left {
-        flex: none;
-        max-width: 100%;
-        max-height: none;
-      }
-
-      .editor-right {
-        max-height: 600px;
-        min-height: 400px;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-
-      .dashboard-left {
-        padding: 16px;
-      }
-
-      .editor-right {
-        padding: 16px;
-        min-height: 300px;
-      }
-
-      .profile-section {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .profile-tags {
-        justify-content: center;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .project-item {
-        padding: 10px 12px;
-      }
-    }
+    .text-white { color: #f0f0f0; }
+    .text-gray-400 { color: #a0a0a0; }
+    .text-gray-500 { color: #808080; }
+    .text-xs { color: #b0b0b0; }
 
     /* Tilt cards */
     .tilt-card {
@@ -486,301 +82,666 @@
       transform: translateZ(0) !important;
       backface-visibility: hidden;
     }
+
+    .tilt-card .tilt-content > * {
+      transform: translateZ(0);
+    }
+
+    /* Skill badges */
+    .skill-badge {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 4px 12px;
+      border-radius: 0.5rem;
+      font-size: 11px;
+      color: #b0b0b0;
+      transition: all 0.2s;
+    }
+    .skill-badge:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    /* Project image placeholder */
+    .project-img {
+      background: linear-gradient(145deg, #1a1a1c, #0e0e0f);
+      border-radius: 0.5rem;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* Scrollable project list */
+    .project-list {
+      max-height: 240px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #444 transparent;
+    }
+    .project-list::-webkit-scrollbar {
+      width: 3px;
+    }
+    .project-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .project-list::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 10px;
+    }
+
+    /* Tab styling */
+    .tab-btn {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      padding: 4px 12px;
+      border-radius: 0.5rem;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      background: transparent;
+      border: 1px solid transparent;
+    }
+    .tab-btn.active {
+      background: rgba(255,255,255,0.06);
+      color: #f0f0f0;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Note cards */
+    .note-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 0.5rem;
+      padding: 12px 16px;
+      transition: all 0.2s;
+    }
+    .note-card:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .note-card .note-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: #121214;
+      border-radius: 1.5rem;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+      padding: 24px;
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 0.5rem;
+      color: #a0a0a0;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .modal-content iframe {
+      width: 100%;
+      height: 500px;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: #0b0b0b;
+    }
+
+    .preview-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .footer-text {
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+      padding: 16px 0 4px 0;
+      letter-spacing: 0.5px;
+    }
+    .footer-text span {
+      color: #888;
+    }
+
+    /* Three dots menu */
+    .three-dots {
+      display: flex;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .three-dots span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #666;
+      transition: background 0.2s;
+    }
+    .three-dots:hover span {
+      background: #999;
+    }
+
+    @media (max-width: 480px) {
+      .phone-glass {
+        padding: 16px;
+      }
+      .modal-content {
+        padding: 16px;
+      }
+      .modal-content iframe {
+        height: 350px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="w-full max-w-md phone-glass p-6 relative overflow-hidden">
 
-  <!-- ===== LEFT: DASHBOARD ===== -->
-  <div class="dashboard-left" id="dashboard">
-
-    <!-- Status Bar -->
-    <div class="status-bar">
-      <div class="dots-menu">
-        <span></span><span></span><span></span>
+  <!-- Status Bar -->
+  <div class="flex justify-between items-center text-gray-400 text-sm font-semibold mb-4">
+    <span class="tracking-wide">Portfolio</span>
+    <div class="flex items-center gap-3">
+      <div class="three-dots">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-      <span class="status-time">✦ YewsWsi</span>
+      <div class="w-8 h-8 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
+        <img src="https://i.pravatar.cc/100?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+      </div>
     </div>
+  </div>
 
-    <!-- Profile -->
-    <div class="profile-section">
-      <div class="profile-avatar">
-        <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" />
+  <!-- Header / Profile -->
+  <div class="flex items-center gap-4 mb-5">
+    <div class="w-16 h-16 bg-gray-600 border border-gray-500 avatar overflow-hidden flex-shrink-0">
+      <img src="https://i.pravatar.cc/150?img=28" alt="YewsWsi" class="w-full h-full object-cover grayscale">
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold text-white tracking-tight">YewsWsi</h1>
+      <p class="text-gray-400 text-sm">Creative Developer · Designer</p>
+      <div class="flex gap-2 mt-1">
+        <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-custom">Developer</span>
+        <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-custom">Designer</span>
+        <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-custom">Creator</span>
       </div>
-      <div class="profile-info">
-        <h2>YewsWsi</h2>
-        <p class="handle">@yewswsi · Creative Developer</p>
-        <div class="profile-tags">
-          <span class="profile-tag"><i class="fas fa-code mr-1"></i>Dev</span>
-          <span class="profile-tag"><i class="fas fa-pen-fancy mr-1"></i>Designer</span>
-          <span class="profile-tag"><i class="fas fa-cog mr-1"></i>Creator</span>
+    </div>
+  </div>
+
+  <!-- Bio Card – tilt -->
+  <div class="glass-deep p-4 mb-4 tilt-card" id="bioCard">
+    <div class="tilt-content">
+      <p class="text-gray-300 text-sm leading-relaxed">
+        Building digital experiences with a focus on <span class="text-white">interaction</span> and 
+        <span class="text-white">motion</span>. Creating things that people love.
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats Grid – 3 cards -->
+  <div class="grid grid-cols-3 gap-3 mb-4">
+    <div class="glass p-3 text-center tilt-card" id="stat1">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Projects</p>
+        <p class="text-white text-2xl font-bold">12</p>
+      </div>
+    </div>
+    <div class="glass p-3 text-center tilt-card" id="stat2">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Showcases</p>
+        <p class="text-white text-2xl font-bold">5</p>
+      </div>
+    </div>
+    <div class="glass p-3 text-center tilt-card" id="stat3">
+      <div class="tilt-content">
+        <p class="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Years</p>
+        <p class="text-white text-2xl font-bold">3+</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills & Tools – tilt -->
+  <div class="mb-4">
+    <h2 class="text-white font-bold text-sm mb-2">Skills & Tools</h2>
+    <div class="glass-deep p-4 tilt-card" id="skillsCard">
+      <div class="tilt-content">
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge">HTML</span>
+          <span class="skill-badge">CSS</span>
+          <span class="skill-badge">JavaScript</span>
+          <span class="skill-badge">React</span>
+          <span class="skill-badge">GSAP</span>
+          <span class="skill-badge">Tailwind</span>
+          <span class="skill-badge">Figma</span>
+          <span class="skill-badge">Blender</span>
+          <span class="skill-badge">Python</span>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Stats -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value">5</div>
-        <div class="stat-label">Projects</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">0</div>
-        <div class="stat-label">Clients</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">0</div>
-        <div class="stat-label">Awards</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">3</div>
-        <div class="stat-label">Years</div>
+  <!-- Showcase Projects – with Tabs -->
+  <div class="mb-4">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="text-white font-bold text-sm">Showcases</h2>
+      <div class="flex space-x-1">
+        <button class="tab-btn active" data-tab="all">All</button>
+        <button class="tab-btn" data-tab="v1">V1</button>
+        <button class="tab-btn" data-tab="v2">V2</button>
       </div>
     </div>
 
-    <!-- Projects -->
-    <div class="projects-header">
-      <h2><i class="fas fa-cube mr-2" style="color:#444;font-size:12px;"></i>Showcases</h2>
-      <span class="project-count">5 projects</span>
-    </div>
+    <div class="glass-deep p-4 tilt-card" id="projectsCard">
+      <div class="tilt-content">
+        <!-- All Showcases -->
+        <div class="tab-content active" id="tab-all">
+          <div class="space-y-3" id="showcaseList">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
 
-    <div class="project-list" id="projectList">
-      <!-- Injected by JS -->
-    </div>
+        <!-- V1 -->
+        <div class="tab-content" id="tab-v1">
+          <div class="space-y-3">
+            <div class="project-img mb-2">
+              <i class="fas fa-dumbbell text-3xl text-gray-600"></i>
+            </div>
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-white font-medium text-sm">Showcase V1</p>
+                <p class="text-gray-400 text-xs">Fitness · Tilt + Tabs</p>
+              </div>
+              <button class="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-custom hover:bg-white/10 transition" onclick="openModal('showcases/showcase-v1.html', 'Showcase V1', 'Fitness · Tilt + Tabs')">
+                Preview →
+              </button>
+            </div>
+          </div>
+        </div>
 
-    <!-- Made By -->
-    <div class="made-by">
-      Everything made by <span>YewsWsi</span> ✦
+        <!-- V2 -->
+        <div class="tab-content" id="tab-v2">
+          <div class="space-y-3">
+            <div class="project-img mb-2">
+              <i class="fas fa-user-astronaut text-3xl text-gray-600"></i>
+            </div>
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-white font-medium text-sm">Showcase V2</p>
+                <p class="text-gray-400 text-xs">Portfolio · Glass</p>
+              </div>
+              <button class="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-custom hover:bg-white/10 transition" onclick="openModal('showcases/showcase-v2.html', 'Showcase V2', 'Portfolio · Glass')">
+                Preview →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ===== RIGHT: EDITOR / PREVIEW ===== -->
-  <div class="editor-right">
-    <div class="editor-header">
-      <div class="dots">
-        <span></span><span></span><span></span>
+  <!-- Notes / Highlights -->
+  <div class="mb-4">
+    <h2 class="text-white font-bold text-sm mb-2">Notes</h2>
+    <div class="glass-deep p-4 tilt-card">
+      <div class="tilt-content space-y-2">
+        <div class="note-card flex items-center gap-3">
+          <div class="note-icon no-tilt">
+            <i class="fas fa-rocket text-gray-400 text-sm"></i>
+          </div>
+          <div>
+            <p class="text-white text-xs font-medium">Current Project</p>
+            <p class="text-gray-400 text-xs">Building a new interactive dashboard</p>
+          </div>
+        </div>
+        <div class="note-card flex items-center gap-3">
+          <div class="note-icon no-tilt">
+            <i class="fas fa-code text-gray-400 text-sm"></i>
+          </div>
+          <div>
+            <p class="text-white text-xs font-medium">Learning</p>
+            <p class="text-gray-400 text-xs">Exploring Three.js and 3D animations</p>
+          </div>
+        </div>
+        <div class="note-card flex items-center gap-3">
+          <div class="note-icon no-tilt">
+            <i class="fas fa-pen-fancy text-gray-400 text-sm"></i>
+          </div>
+          <div>
+            <p class="text-white text-xs font-medium">Design</p>
+            <p class="text-gray-400 text-xs">Working on a new UI kit</p>
+          </div>
+        </div>
       </div>
-      <div class="editor-title">
-        <span>preview</span> · showcase
-      </div>
-      <div style="width:52px;"></div>
-    </div>
-
-    <div class="editor-preview" id="previewContainer">
-      <div class="editor-empty" id="emptyState">
-        <i class="fas fa-phone"></i>
-        <p>Select a project to preview</p>
-        <span class="hint">click any showcase on the left</span>
-      </div>
-      <iframe id="previewIframe" style="display:none;width:100%;height:100%;border:none;background:#0b0b0b;" frameborder="0"></iframe>
     </div>
   </div>
 
+  <!-- Footer -->
+  <div class="footer-text">
+    ✦ Everything made by <span>YewsWsi</span> ✦
+  </div>
+
+  <div class="h-2"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose"><i class="fas fa-times mr-1"></i> Close</button>
+    <div id="modalBody">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="preview-icon no-tilt"><i class="fas fa-eye text-gray-400"></i></div>
+        <div>
+          <h3 class="text-white font-bold text-lg" id="modalTitle">Showcase</h3>
+          <p class="text-gray-400 text-xs" id="modalSub">preview</p>
+        </div>
+      </div>
+      <iframe id="modalIframe" src="" frameborder="0" loading="lazy"></iframe>
+    </div>
+  </div>
 </div>
 
 <script>
-  (function() {
-    'use strict';
+  // ===== SHOWCASE DATA =====
+  const showcases = [
+    {
+      id: 'v1',
+      title: 'Showcase V1',
+      subtitle: 'Fitness · Tilt + Tabs',
+      file: 'showcases/showcase-v1.html',
+      icon: 'fa-dumbbell'
+    },
+    {
+      id: 'v2',
+      title: 'Showcase V2',
+      subtitle: 'Portfolio · Glass',
+      file: 'showcases/showcase-v2.html',
+      icon: 'fa-user-astronaut'
+    },
+    {
+      id: 'v3',
+      title: 'Showcase V3',
+      subtitle: 'Studio · Services',
+      file: 'showcases/showcase-v3.html',
+      icon: 'fa-palette'
+    },
+    {
+      id: 'v4',
+      title: 'Showcase V4',
+      subtitle: 'Agency · Portfolio',
+      file: 'showcases/showcase-v4.html',
+      icon: 'fa-building'
+    },
+    {
+      id: 'v5',
+      title: 'Showcase V5',
+      subtitle: 'Analytics · Products',
+      file: 'showcases/showcase-v5.html',
+      icon: 'fa-chart-simple'
+    }
+  ];
 
-    // ===== SHOWCASE DATA =====
-    const showcases = [
-      {
-        id: 'v1',
-        title: 'Showcase V1',
-        subtitle: 'Fitness · Tilt + Tabs',
-        file: 'showcases/showcase-v1.html',
-        icon: 'fa-dumbbell',
-        badge: 'v1'
-      },
-      {
-        id: 'v2',
-        title: 'Showcase V2',
-        subtitle: 'Portfolio · Glass',
-        file: 'showcases/showcase-v2.html',
-        icon: 'fa-user-astronaut',
-        badge: 'v2'
-      },
-      {
-        id: 'v3',
-        title: 'Showcase V3',
-        subtitle: 'Studio · Services',
-        file: 'showcases/showcase-v3.html',
-        icon: 'fa-palette',
-        badge: 'v3'
-      },
-      {
-        id: 'v4',
-        title: 'Showcase V4',
-        subtitle: 'Agency · Portfolio',
-        file: 'showcases/showcase-v4.html',
-        icon: 'fa-building',
-        badge: 'v4'
-      },
-      {
-        id: 'v5',
-        title: 'Showcase V5',
-        subtitle: 'Analytics · Products',
-        file: 'showcases/showcase-v5.html',
-        icon: 'fa-chart-simple',
-        badge: 'v5'
-      }
-    ];
+  // ===== DOM ELEMENTS =====
+  const listEl = document.getElementById('showcaseList');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalClose = document.getElementById('modalClose');
+  const modalIframe = document.getElementById('modalIframe');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalSub = document.getElementById('modalSub');
 
-    // ===== DOM ELEMENTS =====
-    const projectList = document.getElementById('projectList');
-    const previewIframe = document.getElementById('previewIframe');
-    const emptyState = document.getElementById('emptyState');
+  // ===== RENDER CARDS =====
+  function renderCards() {
+    listEl.innerHTML = '';
+    
+    showcases.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'tilt-card';
+      card.style.cssText = 'background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 0.5rem; padding: 12px 16px; transition: all 0.2s; cursor: pointer;';
+      card.onmouseenter = function() { this.style.background = 'rgba(255,255,255,0.04)'; };
+      card.onmouseleave = function() { this.style.background = 'rgba(255,255,255,0.02)'; };
 
-    // ===== RENDER PROJECTS =====
-    function renderProjects() {
-      projectList.innerHTML = '';
-
-      showcases.forEach((item) => {
-        const el = document.createElement('div');
-        el.className = 'project-item tilt-card';
-        el.dataset.file = item.file;
-
-        el.innerHTML = `
-          <div class="tilt-content" style="display:flex;align-items:center;gap:12px;width:100%;">
-            <div class="project-icon no-tilt">
-              <i class="fas ${item.icon}"></i>
+      card.innerHTML = `
+        <div class="tilt-content flex items-center justify-between w-full">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white/5 rounded-custom flex items-center justify-center no-tilt">
+              <i class="fas ${item.icon} text-gray-400 text-lg"></i>
             </div>
-            <div class="project-info">
-              <div class="title">${item.title}</div>
-              <div class="subtitle">${item.subtitle}</div>
+            <div>
+              <p class="text-white font-medium text-sm">${item.title}</p>
+              <p class="text-gray-400 text-xs">${item.subtitle}</p>
             </div>
-            <span class="project-badge">${item.badge}</span>
           </div>
-        `;
+          <button class="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-custom hover:bg-white/10 transition no-tilt" onclick="event.stopPropagation(); openModal('${item.file}', '${item.title}', '${item.subtitle}')">
+            Preview →
+          </button>
+        </div>
+      `;
 
-        el.addEventListener('click', function() {
-          const file = this.dataset.file;
-          openPreview(file);
+      card.addEventListener('click', function() {
+        const file = this.querySelector('button').getAttribute('onclick').match(/'([^']+)'/g)[0].replace(/'/g, '');
+        const title = this.querySelector('.text-white').textContent;
+        const sub = this.querySelector('.text-gray-400').textContent;
+        openModal(file, title, sub);
+      });
+
+      listEl.appendChild(card);
+    });
+  }
+
+  // ===== MODAL CONTROLS =====
+  window.openModal = function(file, title, sub) {
+    modalTitle.textContent = title || 'Showcase';
+    modalSub.textContent = sub || 'preview';
+    modalIframe.src = file;
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ===== TILT EFFECT =====
+  function initTilt() {
+    const tiltCards = document.querySelectorAll('.tilt-card');
+    const MAX_TILT = 4.5;
+
+    tiltCards.forEach(card => {
+      if (card._tiltAttached) return;
+      card._tiltAttached = true;
+
+      let currentRotX = 0, currentRotY = 0;
+      let targetRotX = 0, targetRotY = 0;
+      let isHovering = false;
+
+      card.addEventListener('mouseenter', () => { isHovering = true; });
+      card.addEventListener('mouseleave', () => {
+        isHovering = false;
+        targetRotX = 0; targetRotY = 0;
+        gsap.to(card, {
+          boxShadow: '0 12px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02)',
+          duration: 0.3, ease: "power2.out"
         });
-
-        projectList.appendChild(el);
       });
 
-      // Tilt init
-      setTimeout(initTilt, 50);
-    }
-
-    // ===== OPEN PREVIEW =====
-    function openPreview(file) {
-      emptyState.style.display = 'none';
-      previewIframe.style.display = 'block';
-      previewIframe.src = file;
-
-      // Highlight active project
-      document.querySelectorAll('.project-item').forEach(el => {
-        el.style.borderColor = 'rgba(255,255,255,0.03)';
-        el.style.background = 'rgba(255,255,255,0.02)';
+      card.addEventListener('mousemove', (e) => {
+        if (!isHovering) return;
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        targetRotX = (y - 0.5) * 2 * MAX_TILT;
+        targetRotY = (x - 0.5) * 2 * MAX_TILT;
+        const shadowX = (x - 0.5) * 8;
+        const shadowY = (y - 0.5) * 8;
+        gsap.to(card, {
+          boxShadow: `${shadowX}px ${shadowY}px 35px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02)`,
+          duration: 0.15, ease: "power1.out"
+        });
       });
 
-      document.querySelectorAll('.project-item').forEach(el => {
-        if (el.dataset.file === file) {
-          el.style.borderColor = 'rgba(255,255,255,0.12)';
-          el.style.background = 'rgba(255,255,255,0.05)';
+      function animateTilt() {
+        if (!isHovering) {
+          currentRotX += (0 - currentRotX) * 0.08;
+          currentRotY += (0 - currentRotY) * 0.08;
+        } else {
+          currentRotX += (targetRotX - currentRotX) * 0.12;
+          currentRotY += (targetRotY - currentRotY) * 0.12;
         }
-      });
-    }
-
-    // ===== TILT EFFECT =====
-    function initTilt() {
-      const tiltCards = document.querySelectorAll('.tilt-card');
-      const MAX_TILT = 3.5;
-
-      tiltCards.forEach(card => {
-        if (card._tiltAttached) return;
-        card._tiltAttached = true;
-
-        let currentRotX = 0, currentRotY = 0;
-        let targetRotX = 0, targetRotY = 0;
-        let isHovering = false;
-
-        card.addEventListener('mouseenter', () => { isHovering = true; });
-        card.addEventListener('mouseleave', () => {
-          isHovering = false;
-          targetRotX = 0;
-          targetRotY = 0;
+        gsap.set(card, {
+          rotateX: currentRotX,
+          rotateY: currentRotY,
+          transformPerspective: 800,
+          duration: 0.01,
+          overwrite: 'auto'
         });
+        requestAnimationFrame(animateTilt);
+      }
+      animateTilt();
+    });
+  }
 
-        card.addEventListener('mousemove', (e) => {
-          if (!isHovering) return;
-          const rect = card.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width;
-          const y = (e.clientY - rect.top) / rect.height;
-          targetRotY = (x - 0.5) * 2 * MAX_TILT;
-          targetRotX = (y - 0.5) * 2 * MAX_TILT;
-        });
+  // ===== TABS =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = {
+    all: document.getElementById('tab-all'),
+    v1: document.getElementById('tab-v1'),
+    v2: document.getElementById('tab-v2')
+  };
 
-        function animateTilt() {
-          if (!isHovering) {
-            currentRotX += (0 - currentRotX) * 0.08;
-            currentRotY += (0 - currentRotY) * 0.08;
-          } else {
-            currentRotX += (targetRotX - currentRotX) * 0.12;
-            currentRotY += (targetRotY - currentRotY) * 0.12;
-          }
-
-          gsap.set(card, {
-            rotateX: currentRotX,
-            rotateY: currentRotY,
-            transformPerspective: 600,
-            duration: 0.01,
-            overwrite: 'auto'
-          });
-
-          requestAnimationFrame(animateTilt);
-        }
-
-        animateTilt();
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      Object.values(tabContents).forEach(content => {
+        content.classList.remove('active');
       });
-    }
+      const tabId = this.dataset.tab;
+      if (tabContents[tabId]) {
+        tabContents[tabId].classList.add('active');
+      }
+    });
+  });
 
-    // ===== ENTRANCE =====
-    function entranceAnim() {
-      gsap.from('.dashboard-left', {
-        opacity: 0,
-        x: -20,
-        duration: 0.7,
-        ease: 'power3.out'
-      });
+  // ===== ENTRANCE ANIMATIONS =====
+  window.addEventListener('load', function() {
+    renderCards();
+    
+    const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
+    tl.from(".phone-glass", { opacity: 0, y: 20, scale: 0.97, duration: 0.7 })
+      .from(".phone-glass > *", { opacity: 0, y: 8, stagger: 0.05, duration: 0.5 }, "-=0.3");
 
-      gsap.from('.editor-right', {
-        opacity: 0,
-        x: 20,
-        duration: 0.7,
-        delay: 0.1,
-        ease: 'power3.out'
-      });
+    anime({
+      targets: '.skill-badge',
+      scale: [0.95, 1],
+      duration: 600,
+      easing: 'easeOutQuad',
+      loop: true,
+      direction: 'alternate',
+      delay: anime.stagger(50)
+    });
 
-      gsap.from('.project-item', {
-        opacity: 0,
-        y: 10,
-        stagger: 0.06,
-        duration: 0.5,
-        delay: 0.2,
-        ease: 'power2.out'
-      });
+    anime({
+      targets: '.note-card',
+      translateX: [4, 0],
+      opacity: [0.7, 1],
+      duration: 800,
+      easing: 'easeOutQuad',
+      delay: anime.stagger(100)
+    });
 
-      gsap.from('.profile-avatar', {
-        rotation: -5,
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.7,
-        delay: 0.3,
-        ease: 'back.out(1.4)'
-      });
-    }
+    gsap.from('.avatar', { rotation: -5, scale: 0.9, opacity: 0, duration: 0.7, delay: 0.3, ease: "back.out(1.4)" });
+    
+    document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
+      gsap.from(el, { opacity: 0, y: 10, duration: 0.5, delay: 0.1 + i * 0.06, ease: "power2.out" });
+    });
 
-    // ===== INIT =====
-    renderProjects();
-    entranceAnim();
     setTimeout(initTilt, 200);
-
-  })();
+  });
 </script>
 
 </body>
