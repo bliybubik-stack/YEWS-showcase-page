@@ -1,54 +1,64 @@
-// app.js - Developer Portfolio Showcase
+// app.js - YewsWsi Developer Portfolio
 
 (function() {
   'use strict';
 
-  // ===== SHOWCASE DATA =====
-  const showcases = [
+  // ===== DATA =====
+  const projects = [
     {
       id: 'v1',
       title: 'Showcase V1',
       subtitle: 'Fitness · Tilt + Tabs',
+      category: 'all',
       file: 'showcases/showcase-v1.html',
       icon: 'fa-dumbbell',
-      category: 'fitness',
-      year: '2026'
+      color: '#a0a0a0',
+      date: '2024',
+      tech: ['GSAP', 'Anime.js', 'Tailwind']
     },
     {
       id: 'v2',
       title: 'Showcase V2',
       subtitle: 'Portfolio · Glass',
+      category: 'all',
       file: 'showcases/showcase-v2.html',
       icon: 'fa-user-astronaut',
-      category: 'portfolio',
-      year: '2026'
+      color: '#b0b0b0',
+      date: '2024',
+      tech: ['GSAP', 'Anime.js', 'Tailwind']
     },
     {
       id: 'v3',
       title: 'Showcase V3',
       subtitle: 'Studio · Services',
+      category: 'all',
       file: 'showcases/showcase-v3.html',
       icon: 'fa-palette',
-      category: 'studio',
-      year: '2026'
+      color: '#c0c0c0',
+      date: '2024',
+      tech: ['GSAP', 'Anime.js', 'Tailwind']
     },
     {
       id: 'v4',
       title: 'Showcase V4',
       subtitle: 'Agency · Portfolio',
+      category: 'all',
       file: 'showcases/showcase-v4.html',
       icon: 'fa-building',
-      category: 'agency',
-      year: '2026'
+      color: '#b8b8b8',
+      date: '2024',
+      tech: ['GSAP', 'Anime.js', 'Tailwind']
     },
     {
       id: 'v5',
       title: 'Showcase V5',
       subtitle: 'Analytics · Products',
+      category: 'all',
       file: 'showcases/showcase-v5.html',
       icon: 'fa-chart-simple',
-      category: 'analytics',
-      year: '2026'
+      color: '#a8a8a8',
+      date: '2024',
+      tech: ['GSAP', 'Anime.js', 'Tailwind']
     }
   ];
 
@@ -59,77 +69,72 @@
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
   const modalSub = document.getElementById('modalSub');
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const projectCount = document.getElementById('projectCount');
 
-  // ===== RENDER PROJECT CARDS =====
-  function renderCards(filter = 'all') {
+  // ===== RENDER CARDS =====
+  function renderCards(category = 'all') {
+    const filtered = category === 'all' 
+      ? projects 
+      : projects.filter(p => p.category === category);
+    
     listEl.innerHTML = '';
-    
-    const filtered = filter === 'all' 
-      ? showcases 
-      : showcases.filter(s => s.category === filter);
-    
-    if (filtered.length === 0) {
-      listEl.innerHTML = `
-        <div class="text-center text-gray-400 py-8">
-          <i class="fas fa-search text-2xl mb-2 opacity-50"></i>
-          <p class="text-sm">No projects in this category</p>
-        </div>
-      `;
-      return;
-    }
-    
-    filtered.forEach((item) => {
+    projectCount.textContent = filtered.length;
+
+    filtered.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'showcase-card tilt-card';
-      
+      card.dataset.index = index;
+      card.dataset.file = item.file;
+
       card.innerHTML = `
-        <div class="tilt-content flex items-center gap-4">
-          <div class="preview-icon no-tilt">
-            <i class="fas ${item.icon} text-gray-400 text-lg"></i>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-2">
-              <div>
-                <p class="text-white font-medium text-sm truncate">${item.title}</p>
-                <p class="text-gray-400 text-xs">${item.subtitle}</p>
+        <div class="tilt-content">
+          <div class="flex items-center gap-4">
+            <div class="preview-icon no-tilt">
+              <i class="fas ${item.icon} text-gray-400 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <p class="text-white font-medium text-sm">${item.title}</p>
+                <span class="badge">${item.id}</span>
               </div>
-              <span class="text-[9px] text-gray-500 bg-white/5 px-2 py-0.5 rounded flex-shrink-0">${item.year}</span>
+              <p class="text-gray-400 text-xs">${item.subtitle}</p>
+              <div class="flex gap-2 mt-1 flex-wrap">
+                ${item.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+              </div>
             </div>
-            <div class="flex items-center gap-2 mt-1.5">
-              <span class="project-category">${item.category}</span>
-              <span class="text-[8px] text-gray-600">•</span>
-              <span class="text-[8px] text-gray-500">${item.id}</span>
-            </div>
+            <i class="fas fa-chevron-right text-gray-500 text-xs no-tilt"></i>
           </div>
-          <i class="fas fa-chevron-right text-gray-500 text-xs no-tilt flex-shrink-0 opacity-50"></i>
         </div>
       `;
 
-      // Click to open modal
-      card.addEventListener('click', function() {
-        openModal(item.file, item.title, item.subtitle);
+      card.addEventListener('click', function(e) {
+        const file = this.dataset.file;
+        const title = this.querySelector('.text-white')?.textContent || 'Project';
+        const sub = this.querySelector('.text-gray-400')?.textContent || '';
+        openModal(file, title, sub);
       });
 
       listEl.appendChild(card);
     });
 
-    // Re-init tilt for new cards
     setTimeout(initTilt, 50);
   }
 
-  // ===== CATEGORY FILTER =====
-  document.querySelectorAll('.filter-btn').forEach(btn => {
+  // ===== TABS =====
+  tabBtns.forEach(btn => {
     btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      tabBtns.forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-      const filter = this.dataset.filter;
-      renderCards(filter);
+      
+      const category = this.dataset.tab;
+      renderCards(category);
     });
   });
 
   // ===== MODAL CONTROLS =====
   function openModal(file, title, sub) {
-    modalTitle.textContent = title || 'Showcase';
+    modalTitle.textContent = title || 'Project';
     modalSub.textContent = sub || 'preview';
     modalIframe.src = file;
     modalOverlay.classList.add('active');
@@ -139,12 +144,19 @@
   function closeModal() {
     modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!modalOverlay.classList.contains('active')) {
+        // Keep src for smoothness
+      }
+    }, 300);
   }
 
   modalClose.addEventListener('click', closeModal);
+  
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
+  
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
@@ -226,59 +238,56 @@
     
     tl.from(".phone-glass", { 
       opacity: 0, 
-      y: 20, 
-      scale: 0.97, 
+      y: 30, 
+      scale: 0.95, 
       duration: 0.7 
     })
-    .from(".phone-glass > *", { 
+    .from(".profile-section", { 
       opacity: 0, 
-      y: 8, 
-      stagger: 0.04, 
-      duration: 0.5 
-    }, "-=0.3");
-
-    // Avatar icon animation
-    gsap.from('.avatar-icon', { 
-      rotation: -10, 
+      y: 20, 
+      duration: 0.6 
+    }, "-=0.3")
+    .from(".badge-group .badge", { 
+      opacity: 0, 
       scale: 0.8, 
+      stagger: 0.08, 
+      duration: 0.4 
+    }, "-=0.2")
+    .from(".tabs-container", { 
       opacity: 0, 
-      duration: 0.7, 
-      delay: 0.3, 
-      ease: "back.out(1.7)" 
+      y: 10, 
+      duration: 0.5 
+    }, "-=0.2");
+
+    // Anime.js micro-animations
+    anime({
+      targets: '.showcase-card',
+      translateY: [10, 0],
+      opacity: [0, 1],
+      duration: 600,
+      easing: 'easeOutQuad',
+      delay: anime.stagger(60, { start: 300 })
     });
 
-    // Tags animation
-    gsap.from('.tag', {
-      opacity: 0,
-      scale: 0.9,
-      duration: 0.4,
-      stagger: 0.06,
-      delay: 0.4,
-      ease: "back.out(1.4)"
+    // Profile icon pulse
+    anime({
+      targets: '.profile-icon',
+      scale: [1, 1.05, 1],
+      duration: 3000,
+      easing: 'easeInOutQuad',
+      loop: true
     });
 
-    // Glass elements animation
+    // Glass elements
     document.querySelectorAll('.glass, .glass-deep').forEach((el, i) => {
       gsap.from(el, { 
         opacity: 0, 
-        y: 10, 
-        duration: 0.4, 
-        delay: 0.1 + i * 0.04, 
+        y: 12, 
+        duration: 0.5, 
+        delay: 0.1 + i * 0.05, 
         ease: "power2.out" 
       });
     });
-
-    // Cards animation
-    setTimeout(() => {
-      anime({
-        targets: '.showcase-card',
-        translateY: [8, 0],
-        opacity: [0, 1],
-        duration: 600,
-        easing: 'easeOutQuad',
-        delay: anime.stagger(60, { start: 300 })
-      });
-    }, 300);
   }
 
   // ===== INIT =====
